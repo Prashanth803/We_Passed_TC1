@@ -24,7 +24,7 @@ load_dotenv()
 app = Flask(__name__)
 
 GITHUB_API_BASE = "https://api.github.com/repos"
-GITHUB_TOKEN =  os.getenv("GITHUB_TOKEN")
+GITHUB_TOKEN =  "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"
 HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"} if GITHUB_TOKEN else {}
 
 CORS(app)
@@ -57,12 +57,14 @@ def process_data():
         logging.error(f"Error: {str(e)}") # log the error
         return jsonify({"error": str(e)}), 500
 
-@app.route("/github/<owner>/<repo>", methods=["POST"])
-def fetch_github_repo(owner, repo):
+@app.route("/github", methods=["POST"])
+def fetch_github_repo():
     """
     Endpoint to fetch GitHub repo contents recursively.
     """
-    
+    data = request.get_json()
+    owner = data.get("githubLink").split("/")[0]
+    repo = data.get("githubLink").split("/")[1]
     try:
         repo_contents = get_repo_contents(owner, repo)
         print('ok')

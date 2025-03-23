@@ -1,380 +1,192 @@
-const mongoose = require('mongoose');
-
-const connectDB = async ()=>{
-    try {
-        const connection = mongoose.connect(process.env.MONGO_URI,{
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        })
-
-        console.log("connected!!!");
-
-    } catch (error) {
-        console.log("failed to connect" + error.messsage);
-        process.exit();
-    }
-}
-
-module.exports = connectDB;
-
-const asyncHandler = require('express-async-handler');
-const User = require('../models/userSchema');
-const Task = require('../models/taskSchema');
-
-const createTask = asyncHandler(async(req,res)=>{
-    const{name,priority,startTime,endTime,status} = req.body;
-    
-    const user = await User.findById(req.userId);
-    // console.log("in controller");
-    console.log(name,priority,startTime,endTime,status);
-    
-    if(!name || !priority || !startTime || !endTime || !status){
-        res.status(404).json({error:'fill all fields'});
-        return;
-    }
-    const task = await Task.create({
-        name,
-        priority,
-        startTime,
-        endTime,
-        status,
-        userId:user,
-    })
-    if(task){
-        res.status(201).json(task);
-    }
-    else{
-        throw new Error('error');
-    }
-})
-
-const editTask = asyncHandler(async(req,res)=>{
-    const{name,priority,startTime,endTime,status,taskId} = req.body;
-    // const user = await User.findById(req.userId);
-    const task = await Task.findById(taskId);
-    if(!task){
-        res.status(404).json({error:'task not found'});
-        return;
-    }
-    task.name = name;
-    task.priority = priority;
-    task.startTime = startTime;
-    task.endTime = endTime;
-    if(status==2 && task.status==1){
-        task.timeCompleted = new Date();
-    }
-    task.status = status;
-    const updatedTask = await task.save();
-    if(updatedTask){
-        res.status(201).json(updatedTask);
-    }
-    else{
-        throw new Error('error');
-    }
-})
-
-const getTaskList = asyncHandler(async(req,res)=>{
-    const {priority, status} = req.body;
-    // console.log(priority,status);
-    
-    const user = await User.findById(req.userId);
-    var tasks = await Task.find({userId:user});
-    if(priority!=0){
-        tasks = tasks.filter((task)=>{
-            return task.priority === priority
-        })
-    }
-    if(status != 0){
-        tasks = tasks.filter((task)=>{
-            return task.status === status
-        })
-    }
-    if(tasks){
-        res.status(201).json(tasks);
-    }
-    else{
-        throw new Error('error');
-    }
-})
-
-const getTables = asyncHandler(async(req,res)=>{
-    const user = await User.findById(req.userId);
-    const tasks = await Task.find({userId:user});
-    var data = []
-    for(var i = 1;i<=5;i++){
-        var filteredTasks = tasks.filter((task)=>{
-            return (task.priority==i && task.status == 1);
-        })
-        var currTime = new Date();
-        var totalLapsedTime = 0;
-        var totalTimeToFinish = 0;
-        filteredTasks.forEach(task => {
-            var diffInMilliseconds = currTime - task.startTime;
-            if(diffInMilliseconds>0){
-                totalLapsedTime += diffInMilliseconds/(1000*60*60);
-            }
-            diffInMilliseconds = task.endTime-currTime;
-            if(diffInMilliseconds>0){
-                totalTimeToFinish += diffInMilliseconds/(1000*60*60);
-            }
-        });
-
-        data.push({
-            "priority":i,
-            "pendingTasks":Math.floor(filteredTasks.length),
-            "totalLapsedTime":Math.floor(totalLapsedTime),
-            "totalTimeToComplete":Math.floor(totalTimeToFinish),
-        })
-        
-    }
-    if(data){
-        res.status(201).json(data);
-    }
-})
-
-const getDetails = asyncHandler(async(req,res)=>{
-    const user = await User.findById(req.userId);
-    const tasks = await Task.find({userId:user});
-    const totalTasks = tasks.length;
-    const pendingTasks = tasks.filter((task)=>{
-        return task.status == 1;
-    })
-    const completedTasks = tasks.filter((task)=>{
-        return task.status == 2;
-    })
-    var totalLapsedTime = 0;
-    var totalTimeToFinish = 0;
-    var avgTimeToFinish = 0;
-    const currTime = new Date();
-    pendingTasks.forEach(task => {
-        var diffInMilliseconds = currTime - task.startTime;
-        if(diffInMilliseconds>0){
-            totalLapsedTime += diffInMilliseconds/(1000*60*60);
-        }
-        diffInMilliseconds = task.endTime-currTime;
-        if(diffInMilliseconds>0){
-            totalTimeToFinish += diffInMilliseconds/(1000*60*60);
-        }
-    })
-    
-    completedTasks.forEach(task => {
-        var diffInMilliseconds = task.timeCompleted - task.startTime;
-        if(diffInMilliseconds>0){
-            avgTimeToFinish += diffInMilliseconds/(1000*60*60);
-        }
-    })
-    
-    totalLapsedTime = Math.floor(totalLapsedTime);
-    totalTimeToFinish = Math.floor(totalTimeToFinish);
-    if(completedTasks.length>0)
-        avgTimeToFinish = Math.floor(avgTimeToFinish/completedTasks.length);
-    if(tasks){
-        res.status(201).json({
-            totalTasks,
-            pendingTasks:pendingTasks.length,
-            completedTasks:completedTasks.length,
-            totalLapsedTime,
-            totalTimeToFinish,
-            avgTimeToFinish,
-        });
-    }
-    else{
-        throw new Error('error');
-    }
-})
-
-const deleteTask = asyncHandler(async(req,res)=>{
-    const {taskIds} = req.body;
-
-    console.log(taskIds);
-    
-
-    taskIds.forEach(async(taskId)=>{
-        const task = await Task.findById(taskId);
-        if(task)
-            await Task.deleteOne(task);
-    })
-    res.status(201).json({message:'tasks deleted'});
-})
-
-
-
-module.exports = {createTask, editTask, getTaskList, getTables, getDetails, deleteTask};
-
-const asyncHandler = require('express-async-handler');
-const User = require('../models/userSchema');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-
-
-const authUser = asyncHandler(async(req,res)=>{
-    console.log(req.body);
-    const{email,password} = req.body;
-    if(!email || !password){
-        // console.log(email,password);
-        res.sendStatus(404);
-    }
-    const user = await User.findOne({email:email})
-    if(user){
-        // console.log(user);
-        const passwordMatch = await bcrypt.compare(password, user.password);
-        if(passwordMatch){
-            const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
-                expiresIn: '30d',
-            });
-            
-            res.status(201).json({"access":token});
-        }
-        else    
-            res.status(400).json({email:'error'})
-    return;
-    }
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await User.create({
-        email,
-        password: hashedPassword,
-    })
-    if(newUser){
-        const token = jwt.sign({ userId: newUser._id }, process.env.SECRET_KEY, {
-            expiresIn: '1h',
-        });
-        res.status(201).json({"access":token});
-    }
-    else{
-        throw new Error ('error')
-    }
-
-})
-
-module.exports = {authUser};
-
-const jwt = require("jsonwebtoken");
-function verifyToken(req, res, next) {
-    const token = req.header("Authorization").replace("Bearer ", "");
-    if (!token) return res.status(401).json({ error: "Access denied" });
-    try {
-        const decoded = jwt.verify(token, process.env.SECRET_KEY);
-        
-        req.userId = decoded.userId;
-        next();
-    } catch (error) {
-        res.status(401).json({ error: error.message });
-    }
-}
-
-module.exports = verifyToken;
-
-
-const mongoose = require('mongoose');
-
-const taskSchema = mongoose.Schema({
-    userId:{
-        type:mongoose.Schema.Types.ObjectId,
-        required:true,
-        ref:'User',
-    },
-    name:{
-        type:String,
-        required:true,
-    },
-    priority:{
-        type:Number,
-        required:true,
-    },
-    startTime:{
-        type:Date,
-        required:true,
-    },
-    endTime:{
-        type:Date,
-        required:true,
-    },
-    status:{
-        type:Number,
-        required:true,
-    },
-    timeCompleted:{
-        type:Date,
-    }
-},{
-    timestamp:true,
-})
-
-const Tasks = mongoose.model('Task',taskSchema);
-module.exports = Tasks;
-
-const mongoose = require('mongoose');
-
-const userSchema = mongoose.Schema({
-    email:{
-        type:String,
-        required:true,
-    },
-    password:{
-        type:String,
-        required:true,
-    },
-},{
-    timestamp:true,
-})
-
-const Users = mongoose.model('User',userSchema);
-module.exports = Users;
-
 const express = require('express');
-const { createTask, editTask, getTaskList, getTables, getDetails, deleteTask } = require('../controllers/taskController');
-const verifyToken = require('../middleware/authMiddleware');
-
-
-const router = express.Router();
-
-router.post('/createTask',verifyToken,createTask);
-router.post('/editTask',verifyToken,editTask);
-router.post('/deleteTask',verifyToken, deleteTask);
-router.post('/getTaskList',verifyToken,getTaskList);
-router.get('/getTables',verifyToken,getTables);
-router.get('/getDetails',verifyToken,getDetails);
-
-module.exports = router;
-
-const express = require('express');
-const { authUser } = require('../controllers/userController');
-
-const router = express.Router();
-
-router.post('/login',authUser);
-
-module.exports = router;
-
-const express = require('express');
-const dotenv = require('dotenv');
-const connectDB = require('./config/connectDB');
-const cors = require('cors');
 const path = require('path');
 
-dotenv.config()
-const app = express()
-const PORT = process.env.PORT || 5000
-connectDB()
-app.use(cors());
-app.use(express.json())
-app.use('/task',require('./routes/taskRouter'));
-app.use('/user',require('./routes/userRouter'));
+const app = express();
+const PORT = 80;
 
-const __dirname1 = path.resolve();
+app.use(express.static(path.join(__dirname, 'static')));
+app.use(express.static(path.join(__dirname, 'images')));
 
-if(process.env.Node_Env=='production'){
-    app.use(express.static(path.join(__dirname1,'./frontend/build')));
-    app.get('*',(req,res)=>{
-        res.sendFile(path.resolve(__dirname1,"./frontend/build/index.html"))
-    })
-}
-else{
-    
-    app.get('/',(req,res)=>{
-        res.send('ok');
-    })
-}
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'index.html'));
+});
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'about.html'));
+});
+app.get('/contact', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'contact.html'));
+});
 
-app.listen(PORT,console.log("server at "+PORT));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+
+const express = require('express');
+const path = require('path');
+
+const app = express();
+const PORT = 80;
+
+app.use(express.static(path.join(__dirname, 'static')));
+app.use(express.static(path.join(__dirname, 'images')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'index.html'));
+});
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'about.html'));
+});
+app.get('/contact', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'contact.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+
+const express = require('express');
+const path = require('path');
+
+const app = express();
+const PORT = 80;
+
+app.use(express.static(path.join(__dirname, 'static')));
+app.use(express.static(path.join(__dirname, 'images')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'index.html'));
+});
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'about.html'));
+});
+app.get('/contact', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'contact.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+
+const express = require('express');
+const path = require('path');
+
+const app = express();
+const PORT = 80;
+
+app.use(express.static(path.join(__dirname, 'static')));
+app.use(express.static(path.join(__dirname, 'images')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'index.html'));
+});
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'about.html'));
+});
+app.get('/contact', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'contact.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+
+const express = require('express');
+const path = require('path');
+
+const app = express();
+const PORT = 80;
+
+app.use(express.static(path.join(__dirname, 'static')));
+app.use(express.static(path.join(__dirname, 'images')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'index.html'));
+});
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'about.html'));
+});
+app.get('/contact', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'contact.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+
+const express = require('express');
+const path = require('path');
+
+const app = express();
+const PORT = 80;
+
+app.use(express.static(path.join(__dirname, 'static')));
+app.use(express.static(path.join(__dirname, 'images')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'index.html'));
+});
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'about.html'));
+});
+app.get('/contact', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'contact.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+
+const express = require('express');
+const path = require('path');
+
+const app = express();
+const PORT = 80;
+
+app.use(express.static(path.join(__dirname, 'static')));
+app.use(express.static(path.join(__dirname, 'images')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'index.html'));
+});
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'about.html'));
+});
+app.get('/contact', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'contact.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+
+const express = require('express');
+const path = require('path');
+
+const app = express();
+const PORT = 80;
+
+app.use(express.static(path.join(__dirname, 'static')));
+app.use(express.static(path.join(__dirname, 'images')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'index.html'));
+});
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'about.html'));
+});
+app.get('/contact', (req, res) => {
+  res.sendFile(path.join(__dirname, 'static', 'contact.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
 

@@ -1,41 +1,77 @@
 // components/Chat/ChatForm.jsx
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './ChatForm.css';
 
 function ChatForm() {
   const [messages, setMessages] = useState([]);
-  const [formData, setFormData] = useState({
-    context: '',
-    api: '',
-    githubLink: '',
-    testingCriteria: '',
-  });
-  const [results, setResults] = useState({
-    'Read Code': '',
-    'Generate BDD': '',
-    'Start Testing': '',
-    'Show Results': '',
-  });
+  const [results, setResults] = useState(''); // Common results state
   const [step, setStep] = useState(0);
   const [formVisible, setFormVisible] = useState(true);
 
   const steps = ['Read Code', 'Generate BDD', 'Start Testing', 'Show Results'];
 
+  const contextRef = useRef('');
+  const apiRef = useRef('');
+  const githubLinkRef = useRef('');
+  const testingCriteriaRef = useRef('');
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    switch (e.target.name) {
+      case 'context':
+        contextRef.current = e.target.value;
+        break;
+      case 'api':
+        apiRef.current = e.target.value;
+        break;
+      case 'githubLink':
+        githubLinkRef.current = e.target.value;
+        break;
+      case 'testingCriteria':
+        testingCriteriaRef.current = e.target.value;
+        break;
+      default:
+        break;
+    }
   };
 
   const handleButtonClick = async (action) => {
-    const requestData = {
-      action: action,
-      context: formData.context,
-      api: formData.api,
-      githubLink: formData.githubLink,
-      testingCriteria: formData.testingCriteria,
-    };
+    let requestData = {};
+
+    switch (action) {
+      case 'Read Code':
+        requestData = {
+          githubLink: githubLinkRef.current,
+        };
+        break;
+      case 'Generate BDD':
+        requestData = {
+          context: contextRef.current,
+        };
+        break;
+      case 'Start Testing':
+        requestData = {
+          api: apiRef.current,
+        };
+        break;
+      case 'Show Results':
+        requestData = {};
+        break;
+      default:
+        requestData = {};
+    }
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/', { // Replace with your API endpoint
+      let hittingAPI = '';
+      if (action === 'Read Code') {
+        hittingAPI = 'http://127.0.0.1:5000/github';
+      } else if (action === 'Generate BDD') {
+        hittingAPI = 'http://127.0.0.1:5000/catfe/context';
+      } else if (action === 'Start Testing') {
+        hittingAPI = 'http://127.0.0.1:5000/catfe/api';
+      } else if (action === 'Show Results') {
+        hittingAPI = 'http://127.0.0.1:5000/catfe/results';
+      }
+      const response = await fetch(hittingAPI, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,54 +84,48 @@ function ChatForm() {
       }
 
       const responseData = await response.json();
-      const aiResponse = responseData.result || `API response for ${action}: ${JSON.stringify(responseData)}`; // Adjust as needed
+      const aiResponse = responseData.result || `API response for ${action}: ${JSON.stringify(responseData)}`;
       setMessages([...messages, { text: `User request for ${action}.`, sender: 'user' }]);
       setMessages([...messages, { text: aiResponse, sender: 'ai' }]);
-      setResults({ ...results, [action]: aiResponse });
+      setResults(aiResponse); // Store the response in the common results state
       setStep(steps.indexOf(action) + 1);
       setFormVisible(false);
-
     } catch (error) {
       console.error('API Error:', error);
       const errorMessage = `Error processing ${action}: ${error.message}`;
       setMessages([...messages, { text: errorMessage, sender: 'ai' }]);
-      setResults({ ...results, [action]: errorMessage });
+      setResults(errorMessage); // Store the error in the common results state
     }
-
-    setFormData({
-      context: '',
-      api: '',
-      githubLink: '',
-      testingCriteria: '',
-    });
   };
 
   return (
     <div className="chat-container">
       <div className="results-section">
-        {steps.map((action) => (
-          <div key={action} className="result-display">
-            <h3>{action} Result:</h3>
-            <p>{results[action]}</p>
+        <div className="result-display">
+          <h3>Result:</h3>
+          <div className="result-content">
+            <p>{results}</p>
           </div>
-        ))}
+        </div>
       </div>
       <div className="chat-messages">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`message ${message.sender === 'user' ? 'user' : 'ai'}`}
-          >
-            {message.text}
-          </div>
-        ))}
+        <div className="messages-content">
+          {messages.map((message, index) => (
+            <div
+              key={index}
+              className={`message ${message.sender === 'user' ? 'user' : 'ai'}`}
+            >
+              {message.text}
+            </div>
+          ))}
+        </div>
       </div>
       {formVisible && (
         <form className="chat-input-form">
           <input
             type="text"
             name="context"
-            value={formData.context}
+            defaultValue={contextRef.current}
             onChange={handleChange}
             placeholder="Context"
             className="chat-input"
@@ -103,22 +133,22 @@ function ChatForm() {
           <input
             type="text"
             name="api"
-            value={formData.api}
+            defaultValue={apiRef.current}
             onChange={handleChange}
-            placeholder="API"
+            placeholder="Deploy Link"
             className="chat-input"
           />
           <input
             type="text"
             name="githubLink"
-            value={formData.githubLink}
+            defaultValue={githubLinkRef.current}
             onChange={handleChange}
             placeholder="GitHub Link"
             className="chat-input"
           />
           <textarea
             name="testingCriteria"
-            value={formData.testingCriteria}
+            defaultValue={testingCriteriaRef.current}
             onChange={handleChange}
             placeholder="Testing Criteria"
             className="chat-input"
