@@ -1,3 +1,4 @@
+// components/Chat/ChatForm.jsx
 import React, { useState } from 'react';
 import './ChatForm.css';
 
@@ -24,21 +25,42 @@ function ChatForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleButtonClick = (action) => {
-    const userMessage = `Action: ${action}\nContext: ${formData.context}\nAPI: ${formData.api}\nGitHub Link: ${formData.githubLink}\nTesting Criteria: ${formData.testingCriteria}`;
-    setMessages([...messages, { text: userMessage, sender: 'user' }]);
+  const handleButtonClick = async (action) => {
+    const requestData = {
+      action: action,
+      context: formData.context,
+      api: formData.api,
+      githubLink: formData.githubLink,
+      testingCriteria: formData.testingCriteria,
+    };
 
-    // Simulate AI response (replace with actual AI API call)
-    setTimeout(() => {
-      const aiResponse = `AI response for ${action}: ${userMessage}`;
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: aiResponse, sender: 'ai' },
-      ]);
+    try {
+      const response = await fetch('http://127.0.0.1:5000/', { // Replace with your API endpoint
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+      const aiResponse = responseData.result || `API response for ${action}: ${JSON.stringify(responseData)}`; // Adjust as needed
+      setMessages([...messages, { text: `User request for ${action}.`, sender: 'user' }]);
+      setMessages([...messages, { text: aiResponse, sender: 'ai' }]);
       setResults({ ...results, [action]: aiResponse });
       setStep(steps.indexOf(action) + 1);
       setFormVisible(false);
-    }, 1000);
+
+    } catch (error) {
+      console.error('API Error:', error);
+      const errorMessage = `Error processing ${action}: ${error.message}`;
+      setMessages([...messages, { text: errorMessage, sender: 'ai' }]);
+      setResults({ ...results, [action]: errorMessage });
+    }
 
     setFormData({
       context: '',
