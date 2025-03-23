@@ -16,12 +16,12 @@
         "startTime": {
           "type": "string",
           "format": "date-time",
-          "description": "Scheduled start time of the task"
+          "description": "Start time of the task"
         },
         "endTime": {
           "type": "string",
           "format": "date-time",
-          "description": "Scheduled end time of the task"
+          "description": "End time of the task"
         },
         "status": {
           "type": "integer",
@@ -58,12 +58,12 @@
         "startTime": {
           "type": "string",
           "format": "date-time",
-          "description": "Scheduled start time of the task"
+          "description": "Start time of the task"
         },
         "endTime": {
           "type": "string",
           "format": "date-time",
-          "description": "Scheduled end time of the task"
+          "description": "End time of the task"
         },
         "status": {
           "type": "integer",
@@ -82,7 +82,7 @@
   },
   {
     "name": "getTaskList",
-    "description": "Retrieves a list of tasks based on filters.",
+    "description": "Retrieves a list of tasks based on filter criteria.",
     "parameters": {
       "type": "object",
       "properties": {
@@ -103,15 +103,15 @@
   },
   {
     "name": "getTables",
-    "description": "Retrieves aggregated data for tasks grouped by priority."
+    "description": "Retrieves aggregated data for task tables."
   },
   {
     "name": "getDetails",
-    "description": "Retrieves overall statistics about tasks."
+    "description": "Retrieves overall task statistics."
   },
   {
     "name": "deleteTask",
-    "description": "Deletes a list of tasks.",
+    "description": "Deletes tasks based on their IDs.",
     "parameters": {
       "type": "object",
       "properties": {

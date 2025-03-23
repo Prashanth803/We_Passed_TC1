@@ -43,3 +43,306 @@
 }
 
 
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "functionCall": {
+              "name": "createTask",
+              "args": {
+                "name": "test_task",
+                "endTime": "2024-07-24T00:00:00",
+                "status": 1,
+                "priority": 1,
+                "startTime": "2024-07-24T00:00:00"
+              }
+            }
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.020498017470041912
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 260,
+    "candidatesTokenCount": 48,
+    "totalTokenCount": 308,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 260
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 48
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "functionCall": {
+              "name": "createTask",
+              "args": {
+                "status": 1,
+                "endTime": "2024-07-24T10:00:00",
+                "startTime": "2024-07-24T09:00:00",
+                "name": "test_task",
+                "priority": 1
+              }
+            }
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.05127870043118795
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 264,
+    "candidatesTokenCount": 48,
+    "totalTokenCount": 312,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 264
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 48
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "functionCall": {
+              "name": "createTask",
+              "args": {
+                "endTime": "2024-07-25T04:17:18.185Z",
+                "startTime": "2024-07-24T04:17:18.185Z",
+                "priority": 1,
+                "name": "test_task",
+                "status": 1
+              }
+            }
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.17987320340912918
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 264,
+    "candidatesTokenCount": 58,
+    "totalTokenCount": 322,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 264
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 58
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "functionCall": {
+              "name": "createTask",
+              "args": {
+                "name": "test_task",
+                "status": 1,
+                "priority": 2,
+                "endTime": "2024-07-24T12:00:00",
+                "startTime": "2024-07-24T10:00:00"
+              }
+            }
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.12676271796226501
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 252,
+    "candidatesTokenCount": 48,
+    "totalTokenCount": 300,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 252
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 48
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "functionCall": {
+              "name": "createTask",
+              "args": {
+                "name": "test_task",
+                "priority": 1,
+                "endTime": "2024-07-24T23:59:00",
+                "status": 1,
+                "startTime": "2024-07-24T00:00:00"
+              }
+            }
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.11260889967282613
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 260,
+    "candidatesTokenCount": 48,
+    "totalTokenCount": 308,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 260
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 48
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "functionCall": {
+              "name": "authUser",
+              "args": {
+                "email": "testuser@test.com",
+                "password": "test123"
+              }
+            }
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -1.7031977352287087e-08
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 263,
+    "candidatesTokenCount": 14,
+    "totalTokenCount": 277,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 263
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 14
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "I can simulate API calls using the provided `default_api` library.  However, the API does not offer any authentication mechanism like tokens.  It also doesn't define user-related functionalities.  Therefore, I will proceed with the assumption that authentication is not required and the user is implicitly authenticated.  Please provide the test scenario you want me to execute.\n"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.4326716105143229
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 260,
+    "candidatesTokenCount": 75,
+    "totalTokenCount": 335,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 260
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 75
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
