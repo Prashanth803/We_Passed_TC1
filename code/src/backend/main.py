@@ -129,7 +129,7 @@ def receive_context():
 
         return jsonify({
             "message": "Context received successfully",
-            "bdd": response.text
+            "BDD":response.text 
         }), 200
 
     except Exception as e:
