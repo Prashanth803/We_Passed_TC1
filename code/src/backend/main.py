@@ -1,3 +1,5 @@
+
+from flask import Flask, jsonify,request
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
@@ -103,8 +105,36 @@ def fetch_github_repo():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route("/", methods=["GET"])
-def index():
-    return jsonify({"message": "Welcome to the Gemini API!"})
+@app.route('/catfe/context', methods=['POST'])
+def receive_context():
+    try:
+        data = request.get_json()
+
+        if not data or 'context' not in data:
+            return jsonify({"error": "Missing 'context' in request body"}), 400
+
+        context = data['context']
+
+        print(f"Received context: {context}")
+        response = model.generate_content(f"""System prompt:
+        You are a skilled QA engineer specialized in Behavior-Driven Development (BDD). You generate comprehensive test cases based on user-provided scenarios or feature descriptions.
+
+        User prompt:
+        Given the following context, generate all possible BDD test cases using the 'Given-When-Then' format. Cover both positive and negative test cases, edge cases, and potential user behaviors if applicable.
+
+        Context:
+        {context}
+        """)
+        print(response.text)
+
+        return jsonify({
+            "message": "Context received successfully",
+            "received": context
+        }), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
