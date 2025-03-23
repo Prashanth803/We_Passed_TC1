@@ -1,17 +1,130 @@
 {
+  "error": {
+    "code": 400,
+    "message": "* GenerateContentRequest.tools[0].function_declarations[0].parameters.properties: should be non-empty for OBJECT type\n",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "I can simulate user authentication with the provided credentials, but the available `default_api` does not have any authentication methods. I will proceed assuming the user is authenticated.  Please provide the next steps or test scenario.\n"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.25004658169216581
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 99,
+    "candidatesTokenCount": 45,
+    "totalTokenCount": 144,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 99
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 45
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "I can simulate user authentication by assuming the user has a valid token.  How can I help you further with this authenticated user? Do you have a specific test case in mind?  For example, do you want to retrieve their contact information?\n"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.27468269348144531
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 90,
+    "candidatesTokenCount": 50,
+    "totalTokenCount": 140,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 90
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 50
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "I can simulate user authentication by assuming the user has a valid token.  What action should I perform for the authenticated user?  Please provide the `userId` and any other necessary information.\n"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.37857698782896382
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 90,
+    "candidatesTokenCount": 39,
+    "totalTokenCount": 129,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 90
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 39
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
   "candidates": [
     {
       "content": {
         "parts": [
           {
             "functionCall": {
-              "name": "createTask",
+              "name": "get_product",
               "args": {
-                "status": 1,
-                "priority": 1,
-                "startTime": "2024-07-24T00:00:00",
-                "name": "test_task",
-                "endTime": "2024-07-24T00:00:00"
+                "product_id": 123
               }
             }
           }
@@ -19,17 +132,107 @@
         "role": "model"
       },
       "finishReason": "STOP",
-      "avgLogprobs": -0.058752854665120445
+      "avgLogprobs": -0.010509099811315536
     }
   ],
   "usageMetadata": {
-    "promptTokenCount": 265,
-    "candidatesTokenCount": 48,
-    "totalTokenCount": 313,
+    "promptTokenCount": 80,
+    "candidatesTokenCount": 6,
+    "totalTokenCount": 86,
     "promptTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 265
+        "tokenCount": 80
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 6
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "error": {
+    "code": 400,
+    "message": "* GenerateContentRequest.tools[0].function_declarations[0].parameters.properties: should be non-empty for OBJECT type\n* GenerateContentRequest.tools[0].function_declarations[1].parameters.properties: should be non-empty for OBJECT type\n* GenerateContentRequest.tools[0].function_declarations[2].parameters.properties: should be non-empty for OBJECT type\n",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "I can simulate user authentication with the given credentials.  What do you want to do after the user is authenticated? Do you want to get contact info?\n"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.35749268531799316
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 90,
+    "candidatesTokenCount": 32,
+    "totalTokenCount": 122,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 90
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 32
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "error": {
+    "code": 400,
+    "message": "* GenerateContentRequest.tools[0].function_declarations[0].parameters.properties: should be non-empty for OBJECT type\n* GenerateContentRequest.tools[0].function_declarations[1].parameters.properties: should be non-empty for OBJECT type\n* GenerateContentRequest.tools[0].function_declarations[2].parameters.properties: should be non-empty for OBJECT type\n",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "I can use the available APIs to get information about a user.  What information about the user are you interested in? For example, I can get their contact information. Do you have a `userId` you would like to use?\n"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.3264191746711731
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 91,
+    "candidatesTokenCount": 48,
+    "totalTokenCount": 139,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 91
       }
     ],
     "candidatesTokensDetails": [
@@ -49,38 +252,65 @@
       "content": {
         "parts": [
           {
-            "functionCall": {
-              "name": "createTask",
-              "args": {
-                "name": "test_task",
-                "endTime": "2024-07-24T00:00:00",
-                "status": 1,
-                "priority": 1,
-                "startTime": "2024-07-24T00:00:00"
-              }
-            }
+            "text": "I can simulate an authenticated user by using the provided credentials.  What action should I perform as the authenticated user?  Please provide the next step or instruction.\n"
           }
         ],
         "role": "model"
       },
       "finishReason": "STOP",
-      "avgLogprobs": -0.020498017470041912
+      "avgLogprobs": -0.21913794315222537
     }
   ],
   "usageMetadata": {
-    "promptTokenCount": 260,
-    "candidatesTokenCount": 48,
-    "totalTokenCount": 308,
+    "promptTokenCount": 82,
+    "candidatesTokenCount": 33,
+    "totalTokenCount": 115,
     "promptTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 260
+        "tokenCount": 82
       }
     ],
     "candidatesTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 48
+        "tokenCount": 33
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "What's the user ID? I need it to retrieve user data and complete the test.\n"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.17955621480941772
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 79,
+    "candidatesTokenCount": 20,
+    "totalTokenCount": 99,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 79
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 20
       }
     ]
   },
@@ -95,13 +325,9 @@
         "parts": [
           {
             "functionCall": {
-              "name": "createTask",
+              "name": "get_data",
               "args": {
-                "status": 1,
-                "endTime": "2024-07-24T10:00:00",
-                "startTime": "2024-07-24T09:00:00",
-                "name": "test_task",
-                "priority": 1
+                "id": 123
               }
             }
           }
@@ -109,23 +335,23 @@
         "role": "model"
       },
       "finishReason": "STOP",
-      "avgLogprobs": -0.05127870043118795
+      "avgLogprobs": -0.40200856328010559
     }
   ],
   "usageMetadata": {
-    "promptTokenCount": 264,
-    "candidatesTokenCount": 48,
-    "totalTokenCount": 312,
+    "promptTokenCount": 94,
+    "candidatesTokenCount": 4,
+    "totalTokenCount": 98,
     "promptTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 264
+        "tokenCount": 94
       }
     ],
     "candidatesTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 48
+        "tokenCount": 4
       }
     ]
   },
@@ -140,13 +366,9 @@
         "parts": [
           {
             "functionCall": {
-              "name": "createTask",
+              "name": "get_product",
               "args": {
-                "endTime": "2024-07-25T04:17:18.185Z",
-                "startTime": "2024-07-24T04:17:18.185Z",
-                "priority": 1,
-                "name": "test_task",
-                "status": 1
+                "product_id": 123
               }
             }
           }
@@ -154,23 +376,131 @@
         "role": "model"
       },
       "finishReason": "STOP",
-      "avgLogprobs": -0.17987320340912918
+      "avgLogprobs": -0.02411169558763504
     }
   ],
   "usageMetadata": {
-    "promptTokenCount": 264,
-    "candidatesTokenCount": 58,
-    "totalTokenCount": 322,
+    "promptTokenCount": 80,
+    "candidatesTokenCount": 6,
+    "totalTokenCount": 86,
     "promptTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 264
+        "tokenCount": 80
       }
     ],
     "candidatesTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 58
+        "tokenCount": 6
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "I can simulate user authentication using the provided credentials.  What would you like me to do after the authentication is complete?  Please provide specific instructions or a test case scenario.\n"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.1935261090596517
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 90,
+    "candidatesTokenCount": 36,
+    "totalTokenCount": 126,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 90
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 36
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "I need the API definition to simulate authentication and provide a valid token.  The current `default_api` does not have authentication capabilities. Please provide an API with authentication methods.\n"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.14107494096498233
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 99,
+    "candidatesTokenCount": 37,
+    "totalTokenCount": 136,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 99
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 37
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "I can simulate user authentication with the given credentials.  What would you like me to do after the authentication is complete?  Please provide me with the next steps or the specific test case you want me to execute.\n"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.22789198702031915
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 91,
+    "candidatesTokenCount": 44,
+    "totalTokenCount": 135,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 91
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 44
       }
     ]
   },
@@ -185,13 +515,9 @@
         "parts": [
           {
             "functionCall": {
-              "name": "createTask",
+              "name": "get_product",
               "args": {
-                "name": "test_task",
-                "status": 1,
-                "priority": 2,
-                "endTime": "2024-07-24T12:00:00",
-                "startTime": "2024-07-24T10:00:00"
+                "product_id": 123
               }
             }
           }
@@ -199,23 +525,59 @@
         "role": "model"
       },
       "finishReason": "STOP",
-      "avgLogprobs": -0.12676271796226501
+      "avgLogprobs": -0.072510475913683578
     }
   ],
   "usageMetadata": {
-    "promptTokenCount": 252,
-    "candidatesTokenCount": 48,
-    "totalTokenCount": 300,
+    "promptTokenCount": 82,
+    "candidatesTokenCount": 6,
+    "totalTokenCount": 88,
     "promptTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 252
+        "tokenCount": 82
       }
     ],
     "candidatesTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 48
+        "tokenCount": 6
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "I can simulate user authentication by assuming the user has a valid token.  What would you like me to do after the authentication is assumed?  For example, do you have a specific API call you'd like me to make using the `default_api` library?  Perhaps you want to retrieve the user's contact information?\n"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.17836731067602185
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 96,
+    "candidatesTokenCount": 69,
+    "totalTokenCount": 165,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 96
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 69
       }
     ]
   },
@@ -230,13 +592,9 @@
         "parts": [
           {
             "functionCall": {
-              "name": "createTask",
+              "name": "get_data",
               "args": {
-                "name": "test_task",
-                "priority": 1,
-                "endTime": "2024-07-24T23:59:00",
-                "status": 1,
-                "startTime": "2024-07-24T00:00:00"
+                "id": 123
               }
             }
           }
@@ -244,23 +602,23 @@
         "role": "model"
       },
       "finishReason": "STOP",
-      "avgLogprobs": -0.11260889967282613
+      "avgLogprobs": -0.067934252321720123
     }
   ],
   "usageMetadata": {
-    "promptTokenCount": 260,
-    "candidatesTokenCount": 48,
-    "totalTokenCount": 308,
+    "promptTokenCount": 83,
+    "candidatesTokenCount": 4,
+    "totalTokenCount": 87,
     "promptTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 260
+        "tokenCount": 83
       }
     ],
     "candidatesTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 48
+        "tokenCount": 4
       }
     ]
   },
@@ -275,10 +633,10 @@
         "parts": [
           {
             "functionCall": {
-              "name": "authUser",
+              "name": "get_user_data",
               "args": {
-                "email": "testuser@test.com",
-                "password": "test123"
+                "apiKey": "test_api_key",
+                "userId": 123
               }
             }
           }
@@ -286,23 +644,23 @@
         "role": "model"
       },
       "finishReason": "STOP",
-      "avgLogprobs": -1.7031977352287087e-08
+      "avgLogprobs": -0.029146291315555573
     }
   ],
   "usageMetadata": {
-    "promptTokenCount": 263,
-    "candidatesTokenCount": 14,
-    "totalTokenCount": 277,
+    "promptTokenCount": 87,
+    "candidatesTokenCount": 12,
+    "totalTokenCount": 99,
     "promptTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 263
+        "tokenCount": 87
       }
     ],
     "candidatesTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 14
+        "tokenCount": 12
       }
     ]
   },
@@ -316,29 +674,362 @@
       "content": {
         "parts": [
           {
-            "text": "I can simulate API calls using the provided `default_api` library.  However, the API does not offer any authentication mechanism like tokens.  It also doesn't define user-related functionalities.  Therefore, I will proceed with the assumption that authentication is not required and the user is implicitly authenticated.  Please provide the test scenario you want me to execute.\n"
+            "functionCall": {
+              "name": "get_users",
+              "args": {
+                "limit": 10
+              }
+            }
           }
         ],
         "role": "model"
       },
       "finishReason": "STOP",
-      "avgLogprobs": -0.4326716105143229
+      "avgLogprobs": -0.46487757563591003
     }
   ],
   "usageMetadata": {
-    "promptTokenCount": 260,
-    "candidatesTokenCount": 75,
-    "totalTokenCount": 335,
+    "promptTokenCount": 119,
+    "candidatesTokenCount": 4,
+    "totalTokenCount": 123,
     "promptTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 260
+        "tokenCount": 119
       }
     ],
     "candidatesTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 75
+        "tokenCount": 4
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "functionCall": {
+              "name": "get_products",
+              "args": {
+                "limit": 10,
+                "category": "Electronics"
+              }
+            }
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.016850336144367855
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 96,
+    "candidatesTokenCount": 6,
+    "totalTokenCount": 102,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 96
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 6
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "I need the `userId` to get contact information. Can you provide it?\n"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.15700023314532111
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 90,
+    "candidatesTokenCount": 17,
+    "totalTokenCount": 107,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 90
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 17
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "functionCall": {
+              "name": "get_user_data",
+              "args": {
+                "api_key": "test123",
+                "user_id": 123
+              }
+            }
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.017535907030105592
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 96,
+    "candidatesTokenCount": 15,
+    "totalTokenCount": 111,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 96
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 15
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "functionCall": {
+              "name": "get_data",
+              "args": {
+                "id": 1
+              }
+            }
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.32507872581481934
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 91,
+    "candidatesTokenCount": 4,
+    "totalTokenCount": 95,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 91
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 4
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "I need the available authentication APIs to proceed with the test case. Please provide the necessary authentication API documentation.\n"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.38538434288718482
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 82,
+    "candidatesTokenCount": 22,
+    "totalTokenCount": 104,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 82
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 22
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "I can simulate user authentication using the provided credentials.  What would you like me to do after the authentication is complete?  Please provide the next steps or test case details.\n"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.21251432100931802
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 96,
+    "candidatesTokenCount": 36,
+    "totalTokenCount": 132,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 96
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 36
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "error": {
+    "code": 400,
+    "message": "* GenerateContentRequest.tools[0].function_declarations[0].parameters.properties: should be non-empty for OBJECT type\n* GenerateContentRequest.tools[0].function_declarations[1].parameters.properties: should be non-empty for OBJECT type\n* GenerateContentRequest.tools[0].function_declarations[2].parameters.properties: should be non-empty for OBJECT type\n",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+
+{
+  "error": {
+    "code": 400,
+    "message": "* GenerateContentRequest.tools[0].function_declarations[0].parameters.properties: should be non-empty for OBJECT type\n* GenerateContentRequest.tools[0].function_declarations[1].parameters.properties: should be non-empty for OBJECT type\n* GenerateContentRequest.tools[0].function_declarations[2].parameters.properties: should be non-empty for OBJECT type\n",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "functionCall": {
+              "name": "getContactInfo",
+              "args": {
+                "userId": 123
+              }
+            }
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.73409724235534668
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 91,
+    "candidatesTokenCount": 4,
+    "totalTokenCount": 95,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 91
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 4
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "I can simulate user authentication by using the provided credentials (username:testuser@test.com, password:test123) within the available API context. Although the `default_api` does not directly offer an authentication method, I can proceed with the assumption that the user is authenticated, and focus on testing functionalities related to user data retrieval, as demonstrated in the subsequent steps.  Please provide the next steps or test cases you would like me to perform.\n"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.39200865093030429
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 90,
+    "candidatesTokenCount": 95,
+    "totalTokenCount": 185,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 90
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 95
       }
     ]
   },

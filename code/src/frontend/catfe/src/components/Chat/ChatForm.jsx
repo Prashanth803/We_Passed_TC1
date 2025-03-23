@@ -4,18 +4,12 @@ import './ChatForm.css';
 
 function ChatForm() {
   const [messages, setMessages] = useState([]);
-  const [results, setResults] = useState({
-    'Read Code': '',
-    'Generate BDD': '',
-    'Start Testing': '',
-    'Show Results': '',
-  });
+  const [results, setResults] = useState(''); // Common results state
   const [step, setStep] = useState(0);
   const [formVisible, setFormVisible] = useState(true);
 
   const steps = ['Read Code', 'Generate BDD', 'Start Testing', 'Show Results'];
 
-  // Using useRef to store input values
   const contextRef = useRef('');
   const apiRef = useRef('');
   const githubLinkRef = useRef('');
@@ -67,9 +61,17 @@ function ChatForm() {
     }
 
     try {
-
-      
-      const response = await fetch(`http://127.0.0.1:5000/github`, {
+      let hittingAPI = '';
+      if (action === 'Read Code') {
+        hittingAPI = 'http://127.0.0.1:5000/github';
+      } else if (action === 'Generate BDD') {
+        hittingAPI = 'http://127.0.0.1:5000/catfe/context';
+      } else if (action === 'Start Testing') {
+        hittingAPI = 'http://127.0.0.1:5000/catfe/api';
+      } else if (action === 'Show Results') {
+        hittingAPI = 'http://127.0.0.1:5000/catfe/results';
+      }
+      const response = await fetch(hittingAPI, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,37 +87,38 @@ function ChatForm() {
       const aiResponse = responseData.result || `API response for ${action}: ${JSON.stringify(responseData)}`;
       setMessages([...messages, { text: `User request for ${action}.`, sender: 'user' }]);
       setMessages([...messages, { text: aiResponse, sender: 'ai' }]);
-      setResults({ ...results, [action]: aiResponse });
+      setResults(aiResponse); // Store the response in the common results state
       setStep(steps.indexOf(action) + 1);
       setFormVisible(false);
-
     } catch (error) {
       console.error('API Error:', error);
       const errorMessage = `Error processing ${action}: ${error.message}`;
       setMessages([...messages, { text: errorMessage, sender: 'ai' }]);
-      setResults({ ...results, [action]: errorMessage });
+      setResults(errorMessage); // Store the error in the common results state
     }
   };
 
   return (
     <div className="chat-container">
       <div className="results-section">
-        {steps.map((action) => (
-          <div key={action} className="result-display">
-            <h3>{action} Result:</h3>
-            <p>{results[action]}</p>
+        <div className="result-display">
+          <h3>Result:</h3>
+          <div className="result-content">
+            <p>{results}</p>
           </div>
-        ))}
+        </div>
       </div>
       <div className="chat-messages">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`message ${message.sender === 'user' ? 'user' : 'ai'}`}
-          >
-            {message.text}
-          </div>
-        ))}
+        <div className="messages-content">
+          {messages.map((message, index) => (
+            <div
+              key={index}
+              className={`message ${message.sender === 'user' ? 'user' : 'ai'}`}
+            >
+              {message.text}
+            </div>
+          ))}
+        </div>
       </div>
       {formVisible && (
         <form className="chat-input-form">

@@ -24,7 +24,7 @@ load_dotenv()
 app = Flask(__name__)
 
 GITHUB_API_BASE = "https://api.github.com/repos"
-GITHUB_TOKEN =  os.getenv("GITHUB_TOKEN")
+GITHUB_TOKEN =  "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"
 HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"} if GITHUB_TOKEN else {}
 
 CORS(app)
@@ -129,7 +129,7 @@ def receive_context():
 
         return jsonify({
             "message": "Context received successfully",
-            "received": context
+            "bdd": response.text
         }), 200
 
     except Exception as e:
