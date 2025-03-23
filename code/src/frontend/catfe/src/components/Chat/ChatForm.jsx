@@ -9,22 +9,35 @@ function ChatForm() {
     githubLink: '',
     testingCriteria: '',
   });
+  const [results, setResults] = useState({
+    'Read Code': '',
+    'Generate BDD': '',
+    'Start Testing': '',
+    'Show Results': '',
+  });
+  const [step, setStep] = useState(0);
+  const [formVisible, setFormVisible] = useState(true);
+
+  const steps = ['Read Code', 'Generate BDD', 'Start Testing', 'Show Results'];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const userMessage = `Context: ${formData.context}\nAPI: ${formData.api}\nGitHub Link: ${formData.githubLink}\nTesting Criteria: ${formData.testingCriteria}`;
+  const handleButtonClick = (action) => {
+    const userMessage = `Action: ${action}\nContext: ${formData.context}\nAPI: ${formData.api}\nGitHub Link: ${formData.githubLink}\nTesting Criteria: ${formData.testingCriteria}`;
     setMessages([...messages, { text: userMessage, sender: 'user' }]);
 
-   
+    // Simulate AI response (replace with actual AI API call)
     setTimeout(() => {
+      const aiResponse = `AI response for ${action}: ${userMessage}`;
       setMessages((prevMessages) => [
         ...prevMessages,
-        { text: `AI response to: ${userMessage}`, sender: 'ai' },
+        { text: aiResponse, sender: 'ai' },
       ]);
+      setResults({ ...results, [action]: aiResponse });
+      setStep(steps.indexOf(action) + 1);
+      setFormVisible(false);
     }, 1000);
 
     setFormData({
@@ -37,6 +50,14 @@ function ChatForm() {
 
   return (
     <div className="chat-container">
+      <div className="results-section">
+        {steps.map((action) => (
+          <div key={action} className="result-display">
+            <h3>{action} Result:</h3>
+            <p>{results[action]}</p>
+          </div>
+        ))}
+      </div>
       <div className="chat-messages">
         {messages.map((message, index) => (
           <div
@@ -47,42 +68,64 @@ function ChatForm() {
           </div>
         ))}
       </div>
-      <form className="chat-input-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="context"
-          value={formData.context}
-          onChange={handleChange}
-          placeholder="Context"
-          className="chat-input"
-        />
-        <input
-          type="text"
-          name="api"
-          value={formData.api}
-          onChange={handleChange}
-          placeholder="API"
-          className="chat-input"
-        />
-        <input
-          type="text"
-          name="githubLink"
-          value={formData.githubLink}
-          onChange={handleChange}
-          placeholder="GitHub Link"
-          className="chat-input"
-        />
-        <textarea
-          name="testingCriteria"
-          value={formData.testingCriteria}
-          onChange={handleChange}
-          placeholder="Testing Criteria"
-          className="chat-input"
-        />
-        <button type="submit" className="send-button">
-          Generate
-        </button>
-      </form>
+      {formVisible && (
+        <form className="chat-input-form">
+          <input
+            type="text"
+            name="context"
+            value={formData.context}
+            onChange={handleChange}
+            placeholder="Context"
+            className="chat-input"
+          />
+          <input
+            type="text"
+            name="api"
+            value={formData.api}
+            onChange={handleChange}
+            placeholder="API"
+            className="chat-input"
+          />
+          <input
+            type="text"
+            name="githubLink"
+            value={formData.githubLink}
+            onChange={handleChange}
+            placeholder="GitHub Link"
+            className="chat-input"
+          />
+          <textarea
+            name="testingCriteria"
+            value={formData.testingCriteria}
+            onChange={handleChange}
+            placeholder="Testing Criteria"
+            className="chat-input"
+          />
+        </form>
+      )}
+      <div className="stepper">
+        <div className="stepper-line">
+          {steps.map((_, index) => (
+            <div
+              key={index}
+              className={`step-circle ${index < step ? 'completed' : ''}`}
+            />
+          ))}
+        </div>
+        <div className="stepper-labels">
+          {steps.map((action, index) => (
+            <button
+              key={index}
+              type="button"
+              className={`step-label ${index < step ? 'completed' : ''}`}
+              onClick={() => handleButtonClick(action)}
+              disabled={index !== step}
+            >
+              {action}
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
