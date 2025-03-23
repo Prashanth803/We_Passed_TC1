@@ -1,4 +1,7 @@
+
 from flask import Flask, jsonify,request
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 import requests
 import os
 import json
@@ -8,6 +11,8 @@ from file_handler import get_file_content
 from json_cleaning import remove_empty_fields, ensure_array_items
 from get_repo import get_repo_contents
 from log_generator import log_file, log_response
+import logging
+
 # Configure Gemini API key
 genai.configure(api_key="AIzaSyDjpailUEWHLsNchA85AdDo2Wbub6q1DG8")
  
@@ -21,6 +26,36 @@ app = Flask(__name__)
 GITHUB_API_BASE = "https://api.github.com/repos"
 GITHUB_TOKEN =  os.getenv("GITHUB_TOKEN")
 HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"} if GITHUB_TOKEN else {}
+
+CORS(app)
+
+# Configure logging to see the requests
+logging.basicConfig(level=logging.INFO)
+
+@app.route("/", methods=["POST"])
+def process_data():
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "No JSON data provided"}), 400
+
+        logging.info(f"Received data: {data}") # Log the received data
+
+        action = data.get("action")
+        context = data.get("context")
+        api = data.get("api")
+        github_link = data.get("githubLink")
+        testing_criteria = data.get("testingCriteria")
+
+        # Process the data (replace with your actual logic)
+        result = f"Processed: Action={action}, Context={context}, API={api}, GitHub Link={github_link}, Testing Criteria={testing_criteria}"
+
+        logging.info(f"Response: {result}") # log the response
+        return jsonify({"result": result})
+
+    except Exception as e:
+        logging.error(f"Error: {str(e)}") # log the error
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/github/<owner>/<repo>", methods=["POST"])
 def fetch_github_repo(owner, repo):
@@ -66,6 +101,7 @@ def fetch_github_repo(owner, repo):
             return jsonify({"error": str(e)}), 500
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 @app.route('/catfe/context', methods=['POST'])
 def receive_context():

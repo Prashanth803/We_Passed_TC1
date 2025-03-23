@@ -1,3 +1,4 @@
+// components/Chat/ChatForm.jsx
 import React, { useState } from 'react';
 import './ChatForm.css';
 
@@ -9,23 +10,57 @@ function ChatForm() {
     githubLink: '',
     testingCriteria: '',
   });
+  const [results, setResults] = useState({
+    'Read Code': '',
+    'Generate BDD': '',
+    'Start Testing': '',
+    'Show Results': '',
+  });
+  const [step, setStep] = useState(0);
+  const [formVisible, setFormVisible] = useState(true);
+
+  const steps = ['Read Code', 'Generate BDD', 'Start Testing', 'Show Results'];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const userMessage = `Context: ${formData.context}\nAPI: ${formData.api}\nGitHub Link: ${formData.githubLink}\nTesting Criteria: ${formData.testingCriteria}`;
-    setMessages([...messages, { text: userMessage, sender: 'user' }]);
+  const handleButtonClick = async (action) => {
+    const requestData = {
+      action: action,
+      context: formData.context,
+      api: formData.api,
+      githubLink: formData.githubLink,
+      testingCriteria: formData.testingCriteria,
+    };
 
-   
-    setTimeout(() => {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: `AI response to: ${userMessage}`, sender: 'ai' },
-      ]);
-    }, 1000);
+    try {
+      const response = await fetch('http://127.0.0.1:5000/', { // Replace with your API endpoint
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+      const aiResponse = responseData.result || `API response for ${action}: ${JSON.stringify(responseData)}`; // Adjust as needed
+      setMessages([...messages, { text: `User request for ${action}.`, sender: 'user' }]);
+      setMessages([...messages, { text: aiResponse, sender: 'ai' }]);
+      setResults({ ...results, [action]: aiResponse });
+      setStep(steps.indexOf(action) + 1);
+      setFormVisible(false);
+
+    } catch (error) {
+      console.error('API Error:', error);
+      const errorMessage = `Error processing ${action}: ${error.message}`;
+      setMessages([...messages, { text: errorMessage, sender: 'ai' }]);
+      setResults({ ...results, [action]: errorMessage });
+    }
 
     setFormData({
       context: '',
@@ -37,6 +72,14 @@ function ChatForm() {
 
   return (
     <div className="chat-container">
+      <div className="results-section">
+        {steps.map((action) => (
+          <div key={action} className="result-display">
+            <h3>{action} Result:</h3>
+            <p>{results[action]}</p>
+          </div>
+        ))}
+      </div>
       <div className="chat-messages">
         {messages.map((message, index) => (
           <div
@@ -47,42 +90,64 @@ function ChatForm() {
           </div>
         ))}
       </div>
-      <form className="chat-input-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="context"
-          value={formData.context}
-          onChange={handleChange}
-          placeholder="Context"
-          className="chat-input"
-        />
-        <input
-          type="text"
-          name="api"
-          value={formData.api}
-          onChange={handleChange}
-          placeholder="API"
-          className="chat-input"
-        />
-        <input
-          type="text"
-          name="githubLink"
-          value={formData.githubLink}
-          onChange={handleChange}
-          placeholder="GitHub Link"
-          className="chat-input"
-        />
-        <textarea
-          name="testingCriteria"
-          value={formData.testingCriteria}
-          onChange={handleChange}
-          placeholder="Testing Criteria"
-          className="chat-input"
-        />
-        <button type="submit" className="send-button">
-          Generate
-        </button>
-      </form>
+      {formVisible && (
+        <form className="chat-input-form">
+          <input
+            type="text"
+            name="context"
+            value={formData.context}
+            onChange={handleChange}
+            placeholder="Context"
+            className="chat-input"
+          />
+          <input
+            type="text"
+            name="api"
+            value={formData.api}
+            onChange={handleChange}
+            placeholder="API"
+            className="chat-input"
+          />
+          <input
+            type="text"
+            name="githubLink"
+            value={formData.githubLink}
+            onChange={handleChange}
+            placeholder="GitHub Link"
+            className="chat-input"
+          />
+          <textarea
+            name="testingCriteria"
+            value={formData.testingCriteria}
+            onChange={handleChange}
+            placeholder="Testing Criteria"
+            className="chat-input"
+          />
+        </form>
+      )}
+      <div className="stepper">
+        <div className="stepper-line">
+          {steps.map((_, index) => (
+            <div
+              key={index}
+              className={`step-circle ${index < step ? 'completed' : ''}`}
+            />
+          ))}
+        </div>
+        <div className="stepper-labels">
+          {steps.map((action, index) => (
+            <button
+              key={index}
+              type="button"
+              className={`step-label ${index < step ? 'completed' : ''}`}
+              onClick={() => handleButtonClick(action)}
+              disabled={index !== step}
+            >
+              {action}
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
