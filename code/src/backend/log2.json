@@ -1,0 +1,132 @@
+[
+  {
+    "name": "createTask",
+    "description": "Creates a new task.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the task"
+        },
+        "priority": {
+          "type": "integer",
+          "description": "Priority level of the task"
+        },
+        "startTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Scheduled start time of the task"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Scheduled end time of the task"
+        },
+        "status": {
+          "type": "integer",
+          "description": "Status of the task (e.g., 1 for pending, 2 for completed)"
+        }
+      },
+      "required": [
+        "name",
+        "priority",
+        "startTime",
+        "endTime",
+        "status"
+      ]
+    }
+  },
+  {
+    "name": "editTask",
+    "description": "Edits an existing task.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "taskId": {
+          "type": "string",
+          "description": "ID of the task to edit"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the task"
+        },
+        "priority": {
+          "type": "integer",
+          "description": "Priority level of the task"
+        },
+        "startTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Scheduled start time of the task"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Scheduled end time of the task"
+        },
+        "status": {
+          "type": "integer",
+          "description": "Status of the task (e.g., 1 for pending, 2 for completed)"
+        }
+      },
+      "required": [
+        "taskId",
+        "name",
+        "priority",
+        "startTime",
+        "endTime",
+        "status"
+      ]
+    }
+  },
+  {
+    "name": "getTaskList",
+    "description": "Retrieves a list of tasks based on filters.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "priority": {
+          "type": "integer",
+          "description": "Filter tasks by priority level (0 for all priorities)"
+        },
+        "status": {
+          "type": "integer",
+          "description": "Filter tasks by status (0 for all statuses)"
+        }
+      },
+      "required": [
+        "priority",
+        "status"
+      ]
+    }
+  },
+  {
+    "name": "getTables",
+    "description": "Retrieves aggregated data for tasks grouped by priority."
+  },
+  {
+    "name": "getDetails",
+    "description": "Retrieves overall statistics about tasks."
+  },
+  {
+    "name": "deleteTask",
+    "description": "Deletes a list of tasks.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "taskIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Array of task IDs to delete"
+        }
+      },
+      "required": [
+        "taskIds"
+      ]
+    }
+  }
+]
+

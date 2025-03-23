@@ -1,0 +1,45 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "functionCall": {
+              "name": "createTask",
+              "args": {
+                "status": 1,
+                "priority": 1,
+                "startTime": "2024-07-24T00:00:00",
+                "name": "test_task",
+                "endTime": "2024-07-24T00:00:00"
+              }
+            }
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "avgLogprobs": -0.058752854665120445
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 265,
+    "candidatesTokenCount": 48,
+    "totalTokenCount": 313,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 265
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 48
+      }
+    ]
+  },
+  "modelVersion": "gemini-1.5-pro-002"
+}
+
+
