@@ -1,0 +1,55 @@
+{
+    "authUser": {
+        "api": "/user/login",
+        "request type": "post",
+        "header": {
+            "Content-Type": "application/json"
+        }
+    },
+    "createTask": {
+        "api": "/task/createTask",
+        "request type": "post",
+        "header": {
+            "Authorization": "Bearer <token>",
+            "Content-Type": "application/json"
+        }
+    },
+    "editTask": {
+        "api": "/task/editTask",
+        "request type": "post",
+        "header": {
+            "Authorization": "Bearer <token>",
+            "Content-Type": "application/json"
+        }
+    },
+    "getTaskList": {
+        "api": "/task/getTaskList",
+        "request type": "post",
+        "header": {
+            "Authorization": "Bearer <token>",
+            "Content-Type": "application/json"
+        }
+    },
+    "getTables": {
+        "api": "/task/getTables",
+        "request type": "get",
+        "header": {
+            "Authorization": "Bearer <token>"
+        }
+    },
+    "getDetails": {
+        "api": "/task/getDetails",
+        "request type": "get",
+        "header": {
+            "Authorization": "Bearer <token>"
+        }
+    },
+    "deleteTask": {
+        "api": "/task/deleteTask",
+        "request type": "post",
+        "header": {
+            "Authorization": "Bearer <token>",
+            "Content-Type": "application/json"
+        }
+    }
+}

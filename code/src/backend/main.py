@@ -107,15 +107,17 @@ def fetch_github_repo():
                                 headername: header
                         """
             )
-                    api_mapping = json.loads(response.text)
+                    json_response = response.text.replace("```json\n", "").replace("\n```", "")
+                    api_mapping = json.loads(json_response)
                     with open("api_mapping.json", "w") as file:
                         json.dump(api_mapping, file, indent=4)
+                    print("api",api_mapping)
+                
+                print(str(repo_contents))
             
-            if "error" in repo_contents:
-                return jsonify({"message: Error fetching files in github"}), 500
-            return jsonify({
-                "function_declarations": response.text,
-            })
+                if "error" in repo_contents:
+                    return jsonify({"message: Error fetching files in github"}), 500
+            return jsonify({"function description": api_mapping})
         except Exception as e:
             return jsonify({"error": str(e)}), 500
     except Exception as e:

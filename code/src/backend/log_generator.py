@@ -33,6 +33,8 @@ def log_response(content):
         file.write(json.dumps(cleaned_json, indent=2))
         file.write("\n\n")
 
+    return cleaned_json
+
 def generate_function_calls(function_desc,bdds):
     function_calls = []
     for bdd in bdds:
