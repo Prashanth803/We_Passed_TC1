@@ -68,7 +68,8 @@ def fetch_github_repo():
     repo = data.get("githubLink").split("/")[1]
     try:
         repo_contents = get_repo_contents(owner, repo)
-        print('ok')
+        api_mapping = ""
+
         try:
             with open("log.txt", "r") as log_file:
                 content = log_file.read()
@@ -93,6 +94,23 @@ def fetch_github_repo():
                         """)
                     log_response(response.text)
 
+                    response = model.generate_content(
+            contents=f"""System prompt: {content}
+
+                        User prompt:
+                        Create A json which maps the apis to their respective functions. only give the json and nothing else.
+                        Use the format
+                        function name:
+                            api: api to be called
+                            request type: get/post/put/delete
+                            header: headers if required
+                                headername: header
+                        """
+            )
+                    api_mapping = json.loads(response.text)
+                    with open("api_mapping.json", "w") as file:
+                        json.dump(api_mapping, file, indent=4)
+            
             if "error" in repo_contents:
                 return jsonify({"message: Error fetching files in github"}), 500
             return jsonify({
@@ -168,24 +186,12 @@ def process_api_calls():
         function_desc = json.loads(log_file.read())
 
     functions_to_calls = generate_function_calls(function_desc,bdds)
+    script_directory = os.path.dirname(os.path.abspath(__file__))
+    file1_path=os.path.join(script_directory,"api_mapping.json")
     api_mapping = ""
-    with (open("log.txt", "r")) as file:
-        function_code = file.read()
-        response = model.generate_content(
-            contents=f"""System prompt: {function_code}
-
-                    User prompt:
-                    Create A json which maps the apis to their respective functions. only give the json file and do not give anything else.
-                    Use the format
-                    function name:
-                        api: api to be called
-                        request_type: get/post/put/delete
-                        header: headers if required
-                            headername: header
-                    """
-        )
-        api_mapping = json.loads(response.text.replace('```json','').replace('\n```',''))
-        print(api_mapping)
+    with open(file1_path,"r") as file:
+        api_mapping=json.load(file)
+    print(api_mapping)
 
     report = []
 
