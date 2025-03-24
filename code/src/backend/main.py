@@ -68,7 +68,8 @@ def fetch_github_repo():
     repo = data.get("githubLink").split("/")[1]
     try:
         repo_contents = get_repo_contents(owner, repo)
-        print('ok')
+        api_mapping = ""
+
         try:
             with open("log.txt", "r") as log_file:
                 content = log_file.read()
@@ -82,10 +83,10 @@ def fetch_github_repo():
         description (string): A comprehensive explanation of the function's purpose and capabilities.
         parameters (object): Defines the input data required by the function.
             type (string): Specifies the overall data type, such as object.
-            properties (object): Lists individual parameters, each with:
-                type (string): The data type of the parameter, such as string, integer, boolean.
-                description (string): A clear explanation of the parameter's purpose and expected format.
-            required (array): An array of strings listing the parameter names that are mandatory for the function to operate.
+            properties (object): Lists individual arguments, each with (if the function doest not take any argument do not add this element):
+                type (string): The data type of the argument, such as string, integer, boolean.
+                description (string): A clear explanation of the argument's purpose and expected format.
+            required (array): An array of strings listing the argu names that are mandatory for the function to operate.
 
         if any parameter is empty do not include it in the JSON. All parameters are required. There should not be any element in the json with empty value.
         If the is a empty value do not include it in the json.
@@ -93,6 +94,23 @@ def fetch_github_repo():
         """)
                     log_response(response.text)
 
+                    response = model.generate_content(
+            contents=f"""System prompt: {content}
+
+                        User prompt:
+                        Create A json which maps the apis to their respective functions. only give the json and nothing else.
+                        Use the format
+                        function name:
+                            api: api to be called
+                            request type: get/post/put/delete
+                            header: headers if required
+                                headername: header
+                        """
+            )
+                    api_mapping = json.loads(response.text)
+                    with open("api_mapping.json", "w") as file:
+                        json.dump(api_mapping, file, indent=4)
+            
             if "error" in repo_contents:
                 return jsonify(repo_contents), 404
             return jsonify({
@@ -161,44 +179,19 @@ def process_api_calls(scenario):
 
     # Construct the path to the file in the same directory
     file_path = os.path.join(script_directory,"log1.txt")
-
+    file1_path=os.path.join(script_directory,"api_mapping.json")
     # Load the JSON data from a file
     with open(file_path, "r") as file:
         functions_to_call = json.load(file)
-    
-
-
-    # Extract function calls
-    
-    # API Mapping
-    api_mapping = ""
-    with (open("log.txt", "r")) as file:
-        function_code = file.read()
-        response = model.generate_content(
-            contents=f"""System prompt: {function_code}
-
-                    User prompt:
-                    Create A json which maps the apis to their respective functions. only give the json and nothing else.
-                    Use the format
-                    function name:
-                        api: api to be called
-                        request type: get/post/put/delete
-                        header: headers if required
-                            headername: header
-                    """
-        )
-        api_mapping = json.loads(response.text)
-        
-    print(api_mapping)
-
-    
+    with open(file1_path,"r") as file:
+        api_mapping=json.load(file)
+     
     for functionCall in functions_to_call['candidates'][0]["content"]['parts']:
         
         function_name = functionCall['functionCall']['name']
         body = functionCall['functionCall']['args']
 
         token = ""
-
         if api_mapping.get(function_name):
             api_url = api_mapping[function_name]['api']
             request_type = api_mapping[function_name]['request_type']
