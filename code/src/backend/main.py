@@ -11,7 +11,7 @@ import re
 from file_handler import get_file_content
 from json_cleaning import remove_empty_fields, ensure_array_items
 from get_repo import get_repo_contents
-from log_generator import log_file, log_response
+from log_generator import log_file, log_response, split_bdds, generate_function_calls
 import logging
 
 # Configure Gemini API key
@@ -75,36 +75,44 @@ def fetch_github_repo():
                 if content:
                     response = model.generate_content(f"""System prompt: {content}
 
-        User prompt: 
-        Define the function using JSON, specifically with a select subset of the OpenAPI schema format. A single function declaration can include the following parameters:
+                        User prompt: 
+                        Define the function using JSON, specifically with a select subset of the OpenAPI schema format. A single function declaration can include the following parameters:
 
-        name (string): The unique identifier for the function within the API call.
-        description (string): A comprehensive explanation of the function's purpose and capabilities.
-        parameters (object): Defines the input data required by the function.
-            type (string): Specifies the overall data type, such as object.
-            properties (object): Lists individual parameters, each with:
-                type (string): The data type of the parameter, such as string, integer, boolean.
-                description (string): A clear explanation of the parameter's purpose and expected format.
-            required (array): An array of strings listing the parameter names that are mandatory for the function to operate.
+                        name (string): The unique identifier for the function within the API call.
+                        description (string): A comprehensive explanation of the function's purpose and capabilities.
+                        parameters (object): Defines the input data required by the function.
+                            type (string): Specifies the overall data type, such as object.
+                            properties (object): Lists individual parameters, each with:
+                                type (string): The data type of the parameter, such as string, integer, boolean.
+                                description (string): A clear explanation of the parameter's purpose and expected format.
+                            required (array): An array of strings listing the parameter names that are mandatory for the function to operate.
 
-        if any parameter is empty do not include it in the JSON. All parameters are required. There should not be any element in the json with empty value.
-        If the is a empty value do not include it in the json.
-        
-        """)
+                        if any parameter is empty do not include it in the JSON. All parameters are required. There should not be any element in the json with empty value.
+                        If the is a empty value do not include it in the json.
+                        
+                        """)
                     log_response(response.text)
 
             if "error" in repo_contents:
-                return jsonify(repo_contents), 404
+                return jsonify({"message: Error fetching files in github"}), 500
             return jsonify({
-                "owner": owner,
-                "repo": repo,
-                "contents": repo_contents
+                "function_declarations": response.text,
             })
         except Exception as e:
             return jsonify({"error": str(e)}), 500
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
+# @app.route('/generateCalls', methods=['POST'])
+# def generate_calls():
+#     data = request.get_json()
+#     bdd_string = data.get("bdds").replace('```gherkin','').replace('\n```','')
+#     scenarios = split_bdds(bdd_string)
+#     function_desc = ""
+#     with open('log2.json','r') as log_file:
+#         function_desc = json.loads(log_file.read())
+#     return jsonify(generate_function_calls(function_desc,scenarios))
 
 
 
@@ -148,29 +156,18 @@ def receive_context():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route("/function", methods=["GET"])
-def process_api_calls(scenario):
+@app.route("/function", methods=["POST"])
+def process_api_calls():
     base_url = "https://taskmanagement-hehd.onrender.com/"
-    final_response = ""
-    apis_called = ""
     
-   
+    data = request.get_json()
+    bdds_string = data.get('bdds')
+    bdds = split_bdds(bdds_string)
+    function_desc = ""
+    with open('log2.json','r') as log_file:
+        function_desc = json.loads(log_file.read())
 
-    # Get the directory of the current script
-    script_directory = os.path.dirname(os.path.abspath(__file__))
-
-    # Construct the path to the file in the same directory
-    file_path = os.path.join(script_directory,"log1.txt")
-
-    # Load the JSON data from a file
-    with open(file_path, "r") as file:
-        functions_to_call = json.load(file)
-    
-
-
-    # Extract function calls
-    
-    # API Mapping
+    functions_to_calls = generate_function_calls(function_desc,bdds)
     api_mapping = ""
     with (open("log.txt", "r")) as file:
         function_code = file.read()
@@ -178,64 +175,67 @@ def process_api_calls(scenario):
             contents=f"""System prompt: {function_code}
 
                     User prompt:
-                    Create A json which maps the apis to their respective functions. only give the json and nothing else.
+                    Create A json which maps the apis to their respective functions. only give the json file and do not give anything else.
                     Use the format
                     function name:
                         api: api to be called
-                        request type: get/post/put/delete
+                        request_type: get/post/put/delete
                         header: headers if required
                             headername: header
                     """
         )
-        api_mapping = json.loads(response.text)
-        
-    print(api_mapping)
+        api_mapping = json.loads(response.text.replace('```json','').replace('\n```',''))
+        print(api_mapping)
 
+    report = []
+
+    for functions_to_call,bdd in zip(functions_to_calls,bdds):
+        final_response = ""
+        apis_called = ""
+        for functionCall in functions_to_call['candidates'][0]["content"]['parts']:
+            function_name = functionCall['functionCall']['name']
+            body = functionCall['functionCall']['args']
+
+            token = ""
+
+            if api_mapping.get(function_name):
+                api_url = api_mapping[function_name]['api']
+                request_type = api_mapping[function_name]['request_type']
+                headers = {"Content-Type": "application/json"}
+
+                # Simulating header modification logic (assuming you handle this separately)
+                generate_header = model.generate_content(
+                    contents=f"""System prompt:
+                    apis:
+                    {str(api_mapping[function_name])}
+                    response from previous apis:
+                    {final_response}
+
+                    User prompt:
+                    current header is :
+                    {str(headers)}
+                    make any required changes (if any) in header based on the previous responses from apis and return only the header in json format.
+                    """
+                )
+                # print(generate_header.text.replace("```json\n", "").replace("\n```", ""))
+                headers = json.loads(generate_header.text.replace("```json\n", "").replace("\n```", ""))
+                api_response = {}
+
+                if request_type == 'get':
+                    api_response = requests.get(f"{base_url}{api_url}", headers=headers, json=body)
+                elif request_type == 'post':
+                    api_response = requests.post(f"{base_url}{api_url}", headers=headers, json=body)
+
+                apis_called += f"\n{function_name} called with args {body} and headers {headers}"
+                final_response += f"\n{function_name} response: {api_response.text}"
+            else:
+                final_response += f"\n{function_name} response: function not found"
     
-    for functionCall in functions_to_call['candidates'][0]["content"]['parts']:
+            print(final_response)
         
-        function_name = functionCall['functionCall']['name']
-        body = functionCall['functionCall']['args']
-
-        token = ""
-
-        if api_mapping.get(function_name):
-            api_url = api_mapping[function_name]['api']
-            request_type = api_mapping[function_name]['request_type']
-            headers = {"Content-Type": "application/json"}
-
-            # Simulating header modification logic (assuming you handle this separately)
-            generate_header = model.generate_content(
-                contents=f"""System prompt:
-                apis:
-                {str(api_mapping[function_name])}
-                response from previous apis:
-                {final_response}
-
-                User prompt:
-                current header is :
-                {str(headers)}
-                make any required changes (if any) in header based on the previous responses from apis and return only the header in json format.
-                """
-            )
-            # print(generate_header.text.replace("```json\n", "").replace("\n```", ""))
-            headers = json.loads(generate_header.text.replace("```json\n", "").replace("\n```", ""))
-            api_response = {}
-
-            if request_type == 'get':
-                api_response = requests.get(f"{base_url}{api_url}", headers=headers, json=body)
-            elif request_type == 'post':
-                api_response = requests.post(f"{base_url}{api_url}", headers=headers, json=body)
-
-            apis_called += f"\n{function_name} called with args {body} and headers {headers}"
-            final_response += f"\n{function_name} response: {api_response.text}"
-        else:
-            final_response += f"\n{function_name} response: function not found"
-
-    print(final_response)
-    print("                                                                                    ")
-    judge(final_response,scenario)
-    return final_response
+        report.append(judge(final_response,bdd))
+    
+    return jsonify(report)
 
 
 def judge(final_response,scenario):
@@ -259,70 +259,9 @@ def judge(final_response,scenario):
           Do not return anything other that the json
        """
     )
-    print(judge_tasks.text)
+    # print(judge_tasks.text)
+    return  json.loads(judge_tasks.text.replace("```json\n", "").replace("\n```", ""))
 
-   
-@app.route("/test", methods=["GET"])
-def test():
-     #get bdd from bdd.json file
-    script_directory = os.path.dirname(os.path.abspath(__file__))
-    
-    # Construct the path to the file in the same directory
-    file_path = os.path.join(script_directory,"bdd.json")
-
-    # Step 1: Read the JSON file
-    with open(file_path, "r", encoding="utf-8") as file:
-        data = json.load(file)  # Load JSON data
-
-    # Step 2: Extract the BDD content
-    bdd_text = data.get("BDD")  # Get the BDD content
-
-    # Step 3: Remove unwanted escape sequences and formatting
-    bdd_text = bdd_text.replace("```gherkin", "").replace("```", "").strip()
-    bdd_text = re.sub(r'Feature:.*?\n', '', bdd_text, flags=re.DOTALL)
-
-    # Step 4: Split into individual scenarios
-    # Split based on "Scenario:" while keeping scenario titles
-    scenarios = re.split(r'\n\s*Scenario:', bdd_text)
-
-    # Reformat scenarios to restore "Scenario:" in each
-    scenarios = [f"Scenario:{s.strip()}" for s in scenarios if s.strip()]
-   
-    # Step 6: Print the structured scenarios
-    for scenario in scenarios:
-        process_scenario(scenario)
-    return jsonify({"scenarios": scenarios})
-
-def process_scenario(scenario):
-    
-    data = {
-            "system_instruction": {
-                "parts": [{"text": "You are a testing bot who tests system when you are given a particular test case scenario."}]
-            },
-            "tools": [],
-            "tool_config": {
-                "function_calling_config": {"mode": "auto"}
-            },
-            "contents": {
-                "role": "user",
-                "parts": [{"text": """
-                Given a user is not logged in
-                And there are tasks with different statuses in the system
-                When the user requests to list tasks with status "completed"
-                Then the system should display only the tasks with status "completed"
-                """}]
-            }
-        }
-
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key={GEMINI_API_KEY}"
-    headers = {'Content-Type': 'application/json'}
-
-    response = requests.post(url, headers=headers,json=data)     
-    script_directory = os.path.dirname(os.path.abspath(__file__))  
-    file_path = os.path.join(script_directory,"log1.txt")
-    with open(file_path, "w", encoding="utf-8") as json_file:
-        json.dump(response.json(), json_file, indent=4)
-    return response.json()
         
         
         

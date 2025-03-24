@@ -5,6 +5,7 @@ import json
 from dotenv import load_dotenv
 import google.generativeai as genai
 from json_cleaning import remove_empty_fields
+import re
 
 
 def log_file(filename, content):
@@ -31,30 +32,53 @@ def log_response(content):
     with open('log2.json','w')as file:
         file.write(json.dumps(cleaned_json, indent=2))
         file.write("\n\n")
-    data = {
-            "system_instruction": {
-                "parts": [{"text": "You are a testing bot who tests system when you are given a particular test case scenario. If you need to autheticate the user use username:testuser@test.com password:test123"}]
-            },
-            "tools":[{
-                "function_declarations":cleaned_json
+
+def generate_function_calls(function_desc,bdds):
+    function_calls = []
+    for bdd in bdds:
+        data = {
+                "system_instruction": {
+                    "parts": [{"text": "You are a testing bot who tests system when you are given a particular test case scenario. If you need to autheticate the user use username:testuser@test.com password:test123"}]
+                },
+                "tools":[{
+                    "function_declarations":function_desc
+                    }
+                ],
+                "tool_config": {
+                    "function_calling_config": {"mode": "auto"}
+                },
+                "contents": {
+                    "role": "user",
+                    "parts": [{"text": f"""
+                    {bdd}
+                    """}]
                 }
-            ],
-            "tool_config": {
-                "function_calling_config": {"mode": "auto"}
-            },
-            "contents": {
-                "role": "user",
-                "parts": [{"text": """
-                Given a user is authenticated with a valid token
-                """}]
             }
-        }
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=AIzaSyDjpailUEWHLsNchA85AdDo2Wbub6q1DG8"
-    headers = {'Content-Type': 'application/json'}
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=AIzaSyDjpailUEWHLsNchA85AdDo2Wbub6q1DG8"
+        headers = {'Content-Type': 'application/json'}
 
-    response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=data)
 
-    with open("log1.txt", "a") as file:
-        file.write(response.text)
-        file.write("\n\n")
+        function_calls.append(response.json())
+    
+    return function_calls
+
+
+def split_bdds(bdd_string):
+    bdd_text = bdd_string
+
+    # Step 3: Remove unwanted escape sequences and formatting
+    bdd_text = bdd_text.replace("```gherkin", "").replace("```", "").strip()
+    bdd_text = re.sub(r'Feature:.*?\n', '', bdd_text, flags=re.DOTALL)
+
+    # Step 4: Split into individual scenarios
+    # Split based on "Scenario:" while keeping scenario titles
+    scenarios = re.split(r'\n\s*Scenario:', bdd_text)
+
+    # Reformat scenarios to restore "Scenario:" in each
+    scenarios = [f"Scenario:{s.strip()}" for s in scenarios if s.strip()]
+
+    return scenarios
+
+    
