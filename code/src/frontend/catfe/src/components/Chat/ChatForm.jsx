@@ -4,9 +4,11 @@ import './ChatForm.css';
 
 function ChatForm() {
   const [messages, setMessages] = useState([]);
-  const [results, setResults] = useState(''); // Common results state
+  const [results, setResults] = useState('');
   const [step, setStep] = useState(0);
   const [formVisible, setFormVisible] = useState(true);
+  const [isBDDEditable, setIsBDDEditable] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const steps = ['Read Code', 'Generate BDD', 'Start Testing', 'Show Results'];
 
@@ -14,6 +16,7 @@ function ChatForm() {
   const apiRef = useRef('');
   const githubLinkRef = useRef('');
   const testingCriteriaRef = useRef('');
+  const bddEditRef = useRef('');
 
   const handleChange = (e) => {
     switch (e.target.name) {
@@ -51,6 +54,7 @@ function ChatForm() {
       case 'Start Testing':
         requestData = {
           api: apiRef.current,
+          bdd: bddEditRef.current ? bddEditRef.current.value : results,
         };
         break;
       case 'Show Results':
@@ -84,18 +88,37 @@ function ChatForm() {
       }
 
       const responseData = await response.json();
-      const aiResponse = responseData.result || `API response for ${action}: ${JSON.stringify(responseData)}`;
+      let aiResponse = responseData.result || `API response for ${action}: ${JSON.stringify(responseData)}`;
+
+      aiResponse = aiResponse.replace(/\\n/g, '\n');
+
+      if (action === 'Generate BDD' && typeof aiResponse === 'string' && aiResponse.startsWith('{')) {
+        try {
+          const parsedResponse = JSON.parse(aiResponse);
+          if (parsedResponse.bdd) {
+            aiResponse = parsedResponse.bdd.replace(/\\n/g, '\n');
+            setIsBDDEditable(true);
+            setIsEditing(true);
+          }
+        } catch (parseError) {
+          console.error('Error parsing JSON:', parseError);
+        }
+      }
+
       setMessages([...messages, { text: `User request for ${action}.`, sender: 'user' }]);
-      setMessages([...messages, { text: aiResponse, sender: 'ai' }]);
-      setResults(aiResponse); // Store the response in the common results state
+      setResults(aiResponse);
       setStep(steps.indexOf(action) + 1);
       setFormVisible(false);
     } catch (error) {
       console.error('API Error:', error);
       const errorMessage = `Error processing ${action}: ${error.message}`;
       setMessages([...messages, { text: errorMessage, sender: 'ai' }]);
-      setResults(errorMessage); // Store the error in the common results state
+      setResults(errorMessage);
     }
+  };
+
+  const handleEditToggle = () => {
+    setIsEditing(!isEditing);
   };
 
   return (
@@ -104,7 +127,20 @@ function ChatForm() {
         <div className="result-display">
           <h3>Result:</h3>
           <div className="result-content">
-            <p>{results}</p>
+            {isBDDEditable && isEditing ? (
+              <textarea
+                ref={bddEditRef}
+                defaultValue={results}
+                className="editable-bdd"
+              />
+            ) : (
+              <pre className="pretty-result">{results}</pre>
+            )}
+            {isBDDEditable && (
+              <button type="button" onClick={handleEditToggle} className="edit-button">
+                {isEditing ? 'View' : 'Edit'}
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -182,4 +218,4 @@ function ChatForm() {
   );
 }
 
-export default ChatForm;
+export default ChatForm; 
