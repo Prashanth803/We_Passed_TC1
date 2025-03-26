@@ -1,0 +1,8 @@
+# ignore env folder
+env/
+githubCheckout/*
+code/src/frontend/catfe/node_modules/
+code/src/frontend/venv/
+code/src/frontend//catfe/node_modules/
+code/src/frontend/venv/
+
