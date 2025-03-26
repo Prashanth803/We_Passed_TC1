@@ -1,0 +1,116 @@
+[
+    {
+        "candidates": [
+            {
+                "content": {
+                    "parts": [
+                        {
+                            "functionCall": {
+                                "name": "authUser",
+                                "args": {
+                                    "password": "test123",
+                                    "email": "testuser@test.com"
+                                }
+                            }
+                        },
+                        {
+                            "functionCall": {
+                                "name": "createTask",
+                                "args": {
+                                    "name": "Test task 1",
+                                    "priority": 3,
+                                    "status": 1,
+                                    "endTime": "2024-07-24T11:00:00",
+                                    "startTime": "2024-07-24T10:00:00"
+                                }
+                            }
+                        },
+                        {
+                            "functionCall": {
+                                "name": "createTask",
+                                "args": {
+                                    "status": 1,
+                                    "endTime": "2024-07-25T15:00:00",
+                                    "priority": 2,
+                                    "startTime": "2024-07-25T14:00:00",
+                                    "name": "Test task 2"
+                                }
+                            }
+                        },
+                        {
+                            "functionCall": {
+                                "name": "getTaskList",
+                                "args": {
+                                    "priority": 0,
+                                    "status": 0
+                                }
+                            }
+                        },
+                        {
+                            "functionCall": {
+                                "name": "editTask",
+                                "args": {
+                                    "startTime": "2024-07-24T12:00:00",
+                                    "name": "Modified Test Task 1",
+                                    "endTime": "2024-07-24T13:00:00",
+                                    "priority": 4,
+                                    "status": 2,
+                                    "taskId": "<taskId>"
+                                }
+                            }
+                        },
+                        {
+                            "functionCall": {
+                                "name": "getTaskList",
+                                "args": {
+                                    "priority": 0,
+                                    "status": 0
+                                }
+                            }
+                        },
+                        {
+                            "functionCall": {
+                                "name": "deleteTask",
+                                "args": {
+                                    "taskIds": [
+                                        "<taskId>"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "functionCall": {
+                                "name": "getTaskList",
+                                "args": {
+                                    "status": 0,
+                                    "priority": 0
+                                }
+                            }
+                        }
+                    ],
+                    "role": "model"
+                },
+                "finishReason": "STOP",
+                "avgLogprobs": -0.03687184565776103
+            }
+        ],
+        "usageMetadata": {
+            "promptTokenCount": 290,
+            "candidatesTokenCount": 185,
+            "totalTokenCount": 475,
+            "promptTokensDetails": [
+                {
+                    "modality": "TEXT",
+                    "tokenCount": 290
+                }
+            ],
+            "candidatesTokensDetails": [
+                {
+                    "modality": "TEXT",
+                    "tokenCount": 185
+                }
+            ]
+        },
+        "modelVersion": "gemini-1.5-pro-002"
+    }
+]

@@ -72,6 +72,5 @@ def split_bdds(bdd_string):
     bdd_text = bdd_text.replace("```gherkin", "")
     bdd_text = re.sub(r'```.*', '', bdd_text, flags=re.DOTALL).replace("```", "").strip()
     #print(bdd_text)
-    test_cases = [bdd for bdd in bdd_text.split("\n\n") if len(bdd) > 2 and bdd[2] == "S"]
-
-    return test_cases
+    scenarios = re.split(r"\n\n\*\*Scenario \d+: ", bdd_text.strip())
+    return scenarios

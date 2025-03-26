@@ -1,0 +1,49 @@
+{
+    "authUser": {
+        "api": "/user/login",
+        "request_type": "post",
+        "header": {}
+    },
+    "createTask": {
+        "api": "/task/createTask",
+        "request_type": "post",
+        "header": {
+            "Authorization": "Bearer <token>"
+        }
+    },
+    "editTask": {
+        "api": "/task/editTask",
+        "request_type": "post",
+        "header": {
+            "Authorization": "Bearer <token>"
+        }
+    },
+    "getTaskList": {
+        "api": "/task/getTaskList",
+        "request_type": "post",
+        "header": {
+            "Authorization": "Bearer <token>"
+        }
+    },
+    "getTables": {
+        "api": "/task/getTables",
+        "request_type": "get",
+        "header": {
+            "Authorization": "Bearer <token>"
+        }
+    },
+    "getDetails": {
+        "api": "/task/getDetails",
+        "request_type": "get",
+        "header": {
+            "Authorization": "Bearer <token>"
+        }
+    },
+    "deleteTask": {
+        "api": "/task/deleteTask",
+        "request_type": "post",
+        "header": {
+            "Authorization": "Bearer <token>"
+        }
+    }
+}
