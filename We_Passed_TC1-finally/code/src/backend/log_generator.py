@@ -65,12 +65,18 @@ def generate_function_calls(function_desc,bdds):
     return function_calls
 
 
-def split_bdds(bdd_string):
-    bdd_text = bdd_string
+def split_bdds(bdd_dict):
+    bdd_text = ""
 
-    # Step 3: Remove unwanted escape sequences and formatting
+    # Combine all string values in the dictionary into one text block
+    if isinstance(bdd_dict, dict):
+        bdd_text = "\n".join(str(value) for value in bdd_dict.values())
+    else:
+        bdd_text = str(bdd_dict)
+
+    # Clean and split
     bdd_text = bdd_text.replace("```gherkin", "")
     bdd_text = re.sub(r'```.*', '', bdd_text, flags=re.DOTALL).replace("```", "").strip()
-    #print(bdd_text)
     scenarios = re.split(r"\n\n\*\*Scenario \d+: ", bdd_text.strip())
+
     return scenarios

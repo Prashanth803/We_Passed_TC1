@@ -11,21 +11,21 @@
         },
         "priority": {
           "type": "integer",
-          "description": "Priority level of the task (1-5)"
+          "description": "Priority level of the task"
         },
         "startTime": {
           "type": "string",
           "format": "date-time",
-          "description": "Start time of the task"
+          "description": "Scheduled start time of the task"
         },
         "endTime": {
           "type": "string",
           "format": "date-time",
-          "description": "End time of the task"
+          "description": "Scheduled end time of the task"
         },
         "status": {
           "type": "integer",
-          "description": "Status of the task (1 for pending, 2 for completed)"
+          "description": "Status of the task (e.g., 1 for pending, 2 for completed)"
         }
       },
       "required": [
@@ -45,7 +45,7 @@
       "properties": {
         "taskId": {
           "type": "string",
-          "description": "ID of the task to edit"
+          "description": "Unique identifier of the task to edit"
         },
         "name": {
           "type": "string",
@@ -53,21 +53,21 @@
         },
         "priority": {
           "type": "integer",
-          "description": "Priority level of the task (1-5)"
+          "description": "Priority level of the task"
         },
         "startTime": {
           "type": "string",
           "format": "date-time",
-          "description": "Start time of the task"
+          "description": "Scheduled start time of the task"
         },
         "endTime": {
           "type": "string",
           "format": "date-time",
-          "description": "End time of the task"
+          "description": "Scheduled end time of the task"
         },
         "status": {
           "type": "integer",
-          "description": "Status of the task (1 for pending, 2 for completed)"
+          "description": "Status of the task (e.g., 1 for pending, 2 for completed)"
         }
       },
       "required": [
@@ -82,13 +82,13 @@
   },
   {
     "name": "getTaskList",
-    "description": "Retrieves a list of tasks based on filters.",
+    "description": "Retrieves a list of tasks based on filter criteria.",
     "parameters": {
       "type": "object",
       "properties": {
         "priority": {
           "type": "integer",
-          "description": "Filter tasks by priority (0 for all priorities)"
+          "description": "Filter tasks by priority level (0 for all priorities)"
         },
         "status": {
           "type": "integer",
@@ -103,15 +103,15 @@
   },
   {
     "name": "getTables",
-    "description": "Retrieves aggregated data for tasks."
+    "description": "Retrieves aggregated data for tasks grouped by priority."
   },
   {
     "name": "getDetails",
-    "description": "Retrieves overall statistics for tasks."
+    "description": "Retrieves overall statistics about tasks."
   },
   {
     "name": "deleteTask",
-    "description": "Deletes a list of tasks.",
+    "description": "Deletes a task based on its ID.",
     "parameters": {
       "type": "object",
       "properties": {
@@ -120,32 +120,11 @@
           "items": {
             "type": "string"
           },
-          "description": "Array of task IDs to delete"
+          "description": "An array of task IDs to delete"
         }
       },
       "required": [
         "taskIds"
-      ]
-    }
-  },
-  {
-    "name": "authUser",
-    "description": "Authenticates a user.",
-    "parameters": {
-      "type": "object",
-      "properties": {
-        "email": {
-          "type": "string",
-          "description": "User's email address"
-        },
-        "password": {
-          "type": "string",
-          "description": "User's password"
-        }
-      },
-      "required": [
-        "email",
-        "password"
       ]
     }
   }

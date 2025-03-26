@@ -1,13 +1,12 @@
 import React, { useState, useRef } from 'react';
 import './ChatForm.css';
-import axios from 'axios';
 import TestResultsTable from './TestResultsTable';
 import ReactJson from 'react-json-view';
 
 function ChatForm() {
   const [messages, setMessages] = useState([]);
   const [results, setResults] = useState('');
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(1);
   const [formVisible, setFormVisible] = useState(true);
   const [isBDDEditable, setIsBDDEditable] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -15,7 +14,7 @@ function ChatForm() {
   const [testResults, setTestResults] = useState([]);
   const [isJson, setIsJson] = useState(false);
 
-  const steps = ['Read Code', 'Generate BDD', 'Start Testing'];
+  const steps = ['Read Code', 'Generate Test Scenarios', 'Start Testing'];
 
   const contextRef = useRef('');
   const apiRef = useRef('');
@@ -47,7 +46,7 @@ function ChatForm() {
         requestData = { githubLink: githubLinkRef.current };
         hittingAPI = 'http://localhost:5000/github';
         break;
-      case 'Generate BDD':
+      case 'Generate Test Scenarios':
         requestData = { context: contextRef.current };
         hittingAPI = 'http://127.0.0.1:5000/catfe/context';
         break;

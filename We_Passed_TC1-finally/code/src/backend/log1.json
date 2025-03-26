@@ -6,21 +6,98 @@
                     "parts": [
                         {
                             "functionCall": {
-                                "name": "authUser",
+                                "name": "createTask",
                                 "args": {
-                                    "password": "test123",
-                                    "email": "testuser@test.com"
+                                    "endTime": "2024-07-24T12:00:00",
+                                    "name": "test_task",
+                                    "status": 1,
+                                    "startTime": "2024-07-24T10:00:00",
+                                    "priority": 1
                                 }
                             }
-                        },
+                        }
+                    ],
+                    "role": "model"
+                },
+                "finishReason": "STOP",
+                "avgLogprobs": -0.08283040920893352
+            }
+        ],
+        "usageMetadata": {
+            "promptTokenCount": 305,
+            "candidatesTokenCount": 48,
+            "totalTokenCount": 353,
+            "promptTokensDetails": [
+                {
+                    "modality": "TEXT",
+                    "tokenCount": 305
+                }
+            ],
+            "candidatesTokensDetails": [
+                {
+                    "modality": "TEXT",
+                    "tokenCount": 48
+                }
+            ]
+        },
+        "modelVersion": "gemini-1.5-pro-002"
+    },
+    {
+        "candidates": [
+            {
+                "content": {
+                    "parts": [
                         {
                             "functionCall": {
                                 "name": "createTask",
                                 "args": {
-                                    "name": "Test task 1",
-                                    "priority": 3,
                                     "status": 1,
+                                    "name": "test_task",
+                                    "startTime": "2024-07-24T12:00:00",
+                                    "endTime": "2024-07-24T13:00:00",
+                                    "priority": 1
+                                }
+                            }
+                        }
+                    ],
+                    "role": "model"
+                },
+                "finishReason": "STOP",
+                "avgLogprobs": -0.10884535312652588
+            }
+        ],
+        "usageMetadata": {
+            "promptTokenCount": 308,
+            "candidatesTokenCount": 48,
+            "totalTokenCount": 356,
+            "promptTokensDetails": [
+                {
+                    "modality": "TEXT",
+                    "tokenCount": 308
+                }
+            ],
+            "candidatesTokensDetails": [
+                {
+                    "modality": "TEXT",
+                    "tokenCount": 48
+                }
+            ]
+        },
+        "modelVersion": "gemini-1.5-pro-002"
+    },
+    {
+        "candidates": [
+            {
+                "content": {
+                    "parts": [
+                        {
+                            "functionCall": {
+                                "name": "createTask",
+                                "args": {
+                                    "status": 1,
+                                    "priority": 1,
                                     "endTime": "2024-07-24T11:00:00",
+                                    "name": "test_task",
                                     "startTime": "2024-07-24T10:00:00"
                                 }
                             }
@@ -29,52 +106,54 @@
                             "functionCall": {
                                 "name": "createTask",
                                 "args": {
+                                    "endTime": "2024-07-25T11:00:00",
+                                    "priority": 1,
+                                    "name": "test_task_2",
                                     "status": 1,
-                                    "endTime": "2024-07-25T15:00:00",
-                                    "priority": 2,
-                                    "startTime": "2024-07-25T14:00:00",
-                                    "name": "Test task 2"
+                                    "startTime": "2024-07-25T10:00:00"
                                 }
                             }
-                        },
+                        }
+                    ],
+                    "role": "model"
+                },
+                "finishReason": "STOP",
+                "avgLogprobs": -0.04398319185996542
+            }
+        ],
+        "usageMetadata": {
+            "promptTokenCount": 306,
+            "candidatesTokenCount": 98,
+            "totalTokenCount": 404,
+            "promptTokensDetails": [
+                {
+                    "modality": "TEXT",
+                    "tokenCount": 306
+                }
+            ],
+            "candidatesTokensDetails": [
+                {
+                    "modality": "TEXT",
+                    "tokenCount": 98
+                }
+            ]
+        },
+        "modelVersion": "gemini-1.5-pro-002"
+    },
+    {
+        "candidates": [
+            {
+                "content": {
+                    "parts": [
                         {
                             "functionCall": {
-                                "name": "getTaskList",
+                                "name": "createTask",
                                 "args": {
-                                    "priority": 0,
-                                    "status": 0
-                                }
-                            }
-                        },
-                        {
-                            "functionCall": {
-                                "name": "editTask",
-                                "args": {
-                                    "startTime": "2024-07-24T12:00:00",
-                                    "name": "Modified Test Task 1",
-                                    "endTime": "2024-07-24T13:00:00",
-                                    "priority": 4,
-                                    "status": 2,
-                                    "taskId": "<taskId>"
-                                }
-                            }
-                        },
-                        {
-                            "functionCall": {
-                                "name": "getTaskList",
-                                "args": {
-                                    "priority": 0,
-                                    "status": 0
-                                }
-                            }
-                        },
-                        {
-                            "functionCall": {
-                                "name": "deleteTask",
-                                "args": {
-                                    "taskIds": [
-                                        "<taskId>"
-                                    ]
+                                    "status": 1,
+                                    "priority": 1,
+                                    "endTime": "2024-07-24T11:00:00",
+                                    "startTime": "2024-07-24T10:00:00",
+                                    "name": "Test Task 1"
                                 }
                             }
                         },
@@ -91,23 +170,206 @@
                     "role": "model"
                 },
                 "finishReason": "STOP",
-                "avgLogprobs": -0.03687184565776103
+                "avgLogprobs": -0.007896845070820934
             }
         ],
         "usageMetadata": {
-            "promptTokenCount": 290,
-            "candidatesTokenCount": 185,
-            "totalTokenCount": 475,
+            "promptTokenCount": 306,
+            "candidatesTokenCount": 53,
+            "totalTokenCount": 359,
             "promptTokensDetails": [
                 {
                     "modality": "TEXT",
-                    "tokenCount": 290
+                    "tokenCount": 306
                 }
             ],
             "candidatesTokensDetails": [
                 {
                     "modality": "TEXT",
-                    "tokenCount": 185
+                    "tokenCount": 53
+                }
+            ]
+        },
+        "modelVersion": "gemini-1.5-pro-002"
+    },
+    {
+        "candidates": [
+            {
+                "content": {
+                    "parts": [
+                        {
+                            "functionCall": {
+                                "name": "createTask",
+                                "args": {
+                                    "endTime": "2024-07-24T11:00:00",
+                                    "status": 1,
+                                    "priority": 1,
+                                    "startTime": "2024-07-24T10:00:00",
+                                    "name": ""
+                                }
+                            }
+                        }
+                    ],
+                    "role": "model"
+                },
+                "finishReason": "STOP",
+                "avgLogprobs": -0.0422308259540134
+            }
+        ],
+        "usageMetadata": {
+            "promptTokenCount": 314,
+            "candidatesTokenCount": 45,
+            "totalTokenCount": 359,
+            "promptTokensDetails": [
+                {
+                    "modality": "TEXT",
+                    "tokenCount": 314
+                }
+            ],
+            "candidatesTokensDetails": [
+                {
+                    "modality": "TEXT",
+                    "tokenCount": 45
+                }
+            ]
+        },
+        "modelVersion": "gemini-1.5-pro-002"
+    },
+    {
+        "candidates": [
+            {
+                "content": {},
+                "finishReason": "MALFORMED_FUNCTION_CALL"
+            }
+        ],
+        "usageMetadata": {
+            "promptTokenCount": 310,
+            "totalTokenCount": 310,
+            "promptTokensDetails": [
+                {
+                    "modality": "TEXT",
+                    "tokenCount": 310
+                }
+            ]
+        },
+        "modelVersion": "gemini-1.5-pro-002"
+    },
+    {
+        "candidates": [
+            {
+                "content": {
+                    "parts": [
+                        {
+                            "functionCall": {
+                                "name": "getTaskList",
+                                "args": {
+                                    "status": 0,
+                                    "priority": 0
+                                }
+                            }
+                        }
+                    ],
+                    "role": "model"
+                },
+                "finishReason": "STOP",
+                "avgLogprobs": -0.3940316140651703
+            }
+        ],
+        "usageMetadata": {
+            "promptTokenCount": 320,
+            "candidatesTokenCount": 4,
+            "totalTokenCount": 324,
+            "promptTokensDetails": [
+                {
+                    "modality": "TEXT",
+                    "tokenCount": 320
+                }
+            ],
+            "candidatesTokensDetails": [
+                {
+                    "modality": "TEXT",
+                    "tokenCount": 4
+                }
+            ]
+        },
+        "modelVersion": "gemini-1.5-pro-002"
+    },
+    {
+        "candidates": [
+            {
+                "content": {},
+                "finishReason": "MALFORMED_FUNCTION_CALL"
+            }
+        ],
+        "usageMetadata": {
+            "promptTokenCount": 315,
+            "totalTokenCount": 315,
+            "promptTokensDetails": [
+                {
+                    "modality": "TEXT",
+                    "tokenCount": 315
+                }
+            ]
+        },
+        "modelVersion": "gemini-1.5-pro-002"
+    },
+    {
+        "candidates": [
+            {
+                "content": {},
+                "finishReason": "MALFORMED_FUNCTION_CALL"
+            }
+        ],
+        "usageMetadata": {
+            "promptTokenCount": 317,
+            "totalTokenCount": 317,
+            "promptTokensDetails": [
+                {
+                    "modality": "TEXT",
+                    "tokenCount": 317
+                }
+            ]
+        },
+        "modelVersion": "gemini-1.5-pro-002"
+    },
+    {
+        "candidates": [
+            {
+                "content": {
+                    "parts": [
+                        {
+                            "functionCall": {
+                                "name": "createTask",
+                                "args": {
+                                    "startTime": "2024-07-14T08:30",
+                                    "status": 1,
+                                    "name": "This is a task name that exceeds the maximum character limit by a significant amount to trigger the validation error and ensure the system handles it correctly. This should be long enough.",
+                                    "priority": 1,
+                                    "endTime": "2024-07-14T09:30"
+                                }
+                            }
+                        }
+                    ],
+                    "role": "model"
+                },
+                "finishReason": "STOP",
+                "avgLogprobs": -0.11155473369441621
+            }
+        ],
+        "usageMetadata": {
+            "promptTokenCount": 367,
+            "candidatesTokenCount": 73,
+            "totalTokenCount": 440,
+            "promptTokensDetails": [
+                {
+                    "modality": "TEXT",
+                    "tokenCount": 367
+                }
+            ],
+            "candidatesTokensDetails": [
+                {
+                    "modality": "TEXT",
+                    "tokenCount": 73
                 }
             ]
         },
